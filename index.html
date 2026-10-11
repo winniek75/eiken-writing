@@ -222,101 +222,89 @@ body {
   cursor: pointer;
 }
 
-.practice-body {
-  flex: 1;
-  padding: 16px;
-  overflow: hidden;
+.practice-screen.active {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  height: 100vh;
+  height: 100dvh;
 }
 
-/* ── 左右分割レイアウト ── */
-.practice-split {
+.practice-body {
   flex: 1;
+  padding: 10px 12px 0;
   display: flex;
-  gap: 16px;
+  flex-direction: column;
+  gap: 8px;
   overflow: hidden;
   min-height: 0;
 }
 
-.practice-left {
-  flex: 1;
+/* 問題文: コンパクト、スクロール可能 */
+.prompt-card {
+  max-height: 30vh;
   overflow-y: auto;
+  padding: 12px 14px;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* 書き方ガイド: 横並びチップ */
+.structure-card {
+  padding: 6px 10px !important;
   display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding-bottom: 16px;
-  min-width: 0;
-}
-
-.practice-right {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  min-width: 0;
-}
-
-.practice-right .writing-area {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.practice-right .writing-textarea {
-  flex: 1;
-  min-height: 120px;
-}
-
-/* モバイル: 縦積み、問題文は折りたたみ可能 */
-@media (max-width: 768px) {
-  .practice-split {
-    flex-direction: column;
-    overflow-y: auto;
-  }
-  .practice-left {
-    overflow: visible;
-    flex: none;
-  }
-  .practice-right {
-    flex: none;
-    padding-bottom: 100px;
-  }
-  .practice-right .writing-textarea {
-    min-height: 180px;
-  }
-  .prompt-toggle {
-    display: flex;
-  }
-  .prompt-card.collapsed .email-body,
-  .prompt-card.collapsed .essay-topic,
-  .prompt-card.collapsed .essay-topic-label,
-  .prompt-card.collapsed [style*="tips"] {
-    display: none;
-  }
-  .prompt-card.collapsed {
-    padding: 12px 16px;
-  }
-}
-
-.prompt-toggle {
-  display: none;
+  flex-wrap: wrap;
+  gap: 6px;
   align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
+  background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+.structure-card .structure-title {
+  font-size: 0.75rem;
   font-weight: 700;
-  font-size: 0.85rem;
+  margin-right: 4px;
+}
+.structure-card ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.structure-card li {
+  background: rgba(255,255,255,0.7);
+  border-radius: 8px;
+  padding: 3px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.structure-card li::before {
+  content: attr(data-num) ". ";
+  font-weight: 800;
   color: var(--primary);
-  padding-top: 8px;
 }
 
-.prompt-toggle .toggle-icon {
-  transition: transform 0.2s;
+/* 入力欄: 残りスペース全部 */
+.writing-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
+.writing-textarea {
+  flex: 1;
+  min-height: 80px;
+  resize: none;
+}
+.writing-label { font-size: 0.8rem; margin-bottom: 4px; }
+.word-counter { padding-top: 4px; }
 
-.prompt-card.collapsed .prompt-toggle .toggle-icon {
-  transform: rotate(-90deg);
+/* 提出ボタン: 画面下固定 */
+.submit-area {
+  padding: 8px 12px 12px;
+  flex-shrink: 0;
 }
 
 /* Email/Topic Card */
@@ -390,47 +378,7 @@ body {
   font-family: 'Nunito', 'Noto Sans JP', sans-serif;
 }
 
-/* Structure Guide */
-.structure-card {
-  background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
-  border-radius: var(--radius);
-  padding: 16px;
-}
-
-.structure-title {
-  font-weight: 700;
-  font-size: 0.85rem;
-  color: #2E7D32;
-  margin-bottom: 8px;
-}
-
-.structure-steps {
-  list-style: none;
-  font-size: 0.85rem;
-  line-height: 1.8;
-}
-
-.structure-steps li {
-  padding-left: 24px;
-  position: relative;
-}
-
-.structure-steps li::before {
-  content: attr(data-num);
-  position: absolute;
-  left: 0;
-  width: 18px;
-  height: 18px;
-  background: #43A047;
-  color: #fff;
-  border-radius: 50%;
-  font-size: 0.7rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  top: 4px;
-  font-weight: 700;
-}
+/* Structure Guide — old styles removed, see .structure-card in practice-body section */
 
 /* Writing Area */
 .writing-area {
@@ -899,23 +847,14 @@ body {
     <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressBar" style="width:0%"></div></div>
   </div>
   <div class="practice-body" id="practiceBody">
-    <div class="practice-split">
-      <div class="practice-left">
-        <!-- Prompt card inserted by JS -->
-        <div id="promptArea"></div>
-        <!-- Structure guide -->
-        <div class="structure-card fade-in" id="structureCard"></div>
-      </div>
-      <div class="practice-right">
-        <!-- Writing area -->
-        <div class="writing-area fade-in">
-          <div class="writing-label">&#x1F4DD; あなたの解答</div>
-          <textarea class="writing-textarea" id="writingInput" placeholder="ここに英語で書こう..."></textarea>
-          <div class="word-counter">
-            <span><span class="word-count" id="wordCount">0</span> words</span>
-            <span class="word-target" id="wordTarget">目標: 25-35語</span>
-          </div>
-        </div>
+    <div id="promptArea"></div>
+    <div class="structure-card fade-in" id="structureCard"></div>
+    <div class="writing-area fade-in">
+      <div class="writing-label">&#x1F4DD; あなたの解答</div>
+      <textarea class="writing-textarea" id="writingInput" placeholder="ここに英語で書こう..."></textarea>
+      <div class="word-counter">
+        <span><span class="word-count" id="wordCount">0</span> words</span>
+        <span class="word-target" id="wordTarget">目標: 25-35語</span>
       </div>
     </div>
   </div>
@@ -1747,10 +1686,6 @@ function renderEmailPrompt(q) {
         </div>
       </div>
       <div class="email-body">${bodyHtml}</div>
-      <div class="prompt-toggle" onclick="document.getElementById('promptCard').classList.toggle('collapsed')">
-        <span>問題文を表示/非表示</span>
-        <span class="toggle-icon">▼</span>
-      </div>
     </div>
   `;
 }
@@ -1760,11 +1695,7 @@ function renderEssayPrompt(q) {
     <div class="prompt-card essay-mode fade-in" id="promptCard">
       <div class="essay-topic-label">TOPIC</div>
       <div class="essay-topic">${q.topic}</div>
-      <div style="margin-top:10px;font-size:0.8rem;color:var(--text-light)">&#x1F4A1; ${q.tips}</div>
-      <div class="prompt-toggle" onclick="document.getElementById('promptCard').classList.toggle('collapsed')">
-        <span>問題文を表示/非表示</span>
-        <span class="toggle-icon">▼</span>
-      </div>
+      <div style="margin-top:8px;font-size:0.8rem;color:var(--text-light)">&#x1F4A1; ${q.tips}</div>
     </div>
   `;
 }
