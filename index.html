@@ -577,6 +577,112 @@ body {
   transition: all 0.2s;
 }
 
+/* ===== Score Circle ===== */
+.score-circle-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.score-circle {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.score-circle svg {
+  transform: rotate(-90deg);
+  width: 120px;
+  height: 120px;
+}
+
+.score-circle .bg-ring {
+  fill: none;
+  stroke: #E0E0F0;
+  stroke-width: 10;
+}
+
+.score-circle .fg-ring {
+  fill: none;
+  stroke-width: 10;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s ease, stroke 0.3s;
+}
+
+.score-number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  font-weight: 900;
+  font-family: 'Nunito', sans-serif;
+}
+
+.score-label {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 4px;
+  font-weight: 700;
+}
+
+/* ===== Feedback Items ===== */
+.feedback-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.feedback-item {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.feedback-item.error {
+  background: #FFF0F0;
+  border: 1px solid #FFCDD2;
+}
+
+.feedback-item.warning {
+  background: #FFFDE7;
+  border: 1px solid #FFF9C4;
+}
+
+.feedback-item.good {
+  background: #F0FFF4;
+  border: 1px solid #C8E6C9;
+}
+
+.feedback-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.feedback-text {
+  flex: 1;
+}
+
+.feedback-fix {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: italic;
+}
+
+.review-answer mark {
+  background: #FFCDD2;
+  padding: 1px 3px;
+  border-radius: 3px;
+}
+
 /* Responsive */
 @media (min-width: 768px) {
   .practice-body, .review-body {
@@ -654,39 +760,39 @@ body {
 <!-- ===== HOME SCREEN ===== -->
 <div class="screen home-screen active" id="homeScreen">
   <div class="home-logo">&#x270D;&#xFE0F;</div>
-  <h1 class="home-title">えいけん<br>ライティング道場</h1>
-  <p class="home-subtitle">Eメールがえしん & いけんぶん れんしゅう</p>
+  <h1 class="home-title">英検<br>ライティング道場</h1>
+  <p class="home-subtitle">Eメール返信 & 意見文 練習</p>
 
   <div class="stats-row">
     <div class="stat-card">
       <div class="stat-num" id="statTotal">0</div>
-      <div class="stat-label">れんしゅう</div>
+      <div class="stat-label">練習回数</div>
     </div>
     <div class="stat-card">
       <div class="stat-num" id="statStars">0</div>
-      <div class="stat-label">ほし</div>
+      <div class="stat-label">獲得スター</div>
     </div>
   </div>
 
   <div class="home-card">
     <div class="selector-group">
-      <div class="selector-label">きゅう をえらぼう</div>
+      <div class="selector-label">級を選ぼう</div>
       <div class="selector-buttons" id="gradeSelector">
-        <button class="sel-btn" data-grade="3">3きゅう</button>
-        <button class="sel-btn" data-grade="pre2">じゅん2きゅう</button>
-        <button class="sel-btn" data-grade="2">2きゅう</button>
+        <button class="sel-btn" data-grade="3">3級</button>
+        <button class="sel-btn" data-grade="pre2">準2級</button>
+        <button class="sel-btn" data-grade="2">2級</button>
       </div>
     </div>
 
     <div class="selector-group">
-      <div class="selector-label">モード をえらぼう</div>
+      <div class="selector-label">モードを選ぼう</div>
       <div class="selector-buttons" id="modeSelector">
-        <button class="sel-btn" data-mode="email">Eメール<br>がえしん</button>
-        <button class="sel-btn" data-mode="essay">いけんぶん</button>
+        <button class="sel-btn" data-mode="email">Eメール<br>返信</button>
+        <button class="sel-btn" data-mode="essay">意見文</button>
       </div>
     </div>
 
-    <button class="start-btn" id="startBtn" disabled>はじめる!</button>
+    <button class="start-btn" id="startBtn" disabled>始める!</button>
   </div>
 </div>
 
@@ -694,7 +800,7 @@ body {
 <div class="screen practice-screen" id="practiceScreen">
   <div class="practice-header">
     <button class="back-btn" id="backBtn">&#x2190;</button>
-    <span class="practice-title" id="practiceTitle">3きゅう Eメールがえしん</span>
+    <span class="practice-title" id="practiceTitle">3級 Eメール返信</span>
     <span class="timer-badge" id="timerBadge" title="タイマー ON/OFF">00:00</span>
     <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressBar" style="width:0%"></div></div>
   </div>
@@ -707,17 +813,17 @@ body {
 
     <!-- Writing area -->
     <div class="writing-area fade-in">
-      <div class="writing-label">&#x1F4DD; あなたのこたえ</div>
-      <textarea class="writing-textarea" id="writingInput" placeholder="ここに えいごで かこう..."></textarea>
+      <div class="writing-label">&#x1F4DD; あなたの解答</div>
+      <textarea class="writing-textarea" id="writingInput" placeholder="ここに英語で書こう..."></textarea>
       <div class="word-counter">
         <span><span class="word-count" id="wordCount">0</span> words</span>
-        <span class="word-target" id="wordTarget">もくひょう: 25-35語</span>
+        <span class="word-target" id="wordTarget">目標: 25-35語</span>
       </div>
     </div>
   </div>
 
   <div class="submit-area">
-    <button class="submit-btn" id="submitBtn" disabled>できた!</button>
+    <button class="submit-btn" id="submitBtn" disabled>提出する</button>
   </div>
 </div>
 
@@ -725,12 +831,29 @@ body {
 <div class="screen review-screen" id="reviewScreen">
   <div class="review-header">
     <div class="review-stars" id="reviewStars"></div>
-    <div class="review-msg" id="reviewMsg">がんばったね!</div>
+    <div class="review-msg" id="reviewMsg">頑張ったね!</div>
   </div>
   <div class="review-body">
+    <!-- Auto score -->
+    <div class="review-card fade-in" id="scoreCard">
+      <div class="review-card-title">&#x1F4CA; 自動採点結果</div>
+      <div class="score-circle-container">
+        <div class="score-circle">
+          <svg viewBox="0 0 120 120">
+            <circle class="bg-ring" cx="60" cy="60" r="50"/>
+            <circle class="fg-ring" id="scoreRing" cx="60" cy="60" r="50"
+              stroke-dasharray="314.16" stroke-dashoffset="314.16"/>
+          </svg>
+          <div class="score-number" id="scoreNumber">0</div>
+        </div>
+        <div class="score-label">自動採点スコア</div>
+      </div>
+      <div class="feedback-list" id="feedbackList"></div>
+    </div>
+
     <!-- Your answer -->
     <div class="review-card fade-in">
-      <div class="review-card-title">&#x1F4AC; あなたのこたえ</div>
+      <div class="review-card-title">&#x1F4AC; あなたの解答</div>
       <div class="review-answer" id="yourAnswer"></div>
       <div class="word-counter" style="margin-top:8px">
         <span><span class="word-count" id="reviewWordCount">0</span> words</span>
@@ -739,7 +862,7 @@ body {
 
     <!-- Model answer -->
     <div class="review-card fade-in">
-      <div class="review-card-title">&#x1F4D6; もはんかいとう</div>
+      <div class="review-card-title">&#x1F4D6; 模範解答</div>
       <div class="model-answer-box" id="modelAnswer"></div>
     </div>
 
@@ -752,7 +875,7 @@ body {
 
   <div class="next-area">
     <button class="home-return-btn" id="homeReturnBtn">&#x1F3E0;</button>
-    <button class="next-btn" id="nextBtn">つぎのもんだい &#x2192;</button>
+    <button class="next-btn" id="nextBtn">次の問題 &#x2192;</button>
   </div>
 </div>
 
@@ -767,105 +890,105 @@ const QUESTIONS = {
       subject: "Weekend Plans",
       body: `Hi! How are you? I'm so excited about this weekend. I want to do something fun.\n\n<q>What are you going to do this weekend?</q> Also, <q>what is your favorite food?</q> I want to try Japanese food!\n\nYour friend,\nAlex`,
       modelReply: `Hi Alex,\n\nThank you for your email. I'm going to go shopping with my friends this weekend. We will go to a big mall near my house. My favorite food is sushi. I eat sushi every week. You should try it!\n\nYour friend`,
-      tips: "しゅうまつのよていと、すきなたべものの2つにこたえよう"
+      tips: "週末の予定と好きな食べ物の2つに答えよう"
     },
     {
       from: "Emma",
       subject: "Your Hobby",
       body: `Hi! I'm writing a report about hobbies for my class.\n\n<q>What is your hobby?</q> And <q>how often do you do it?</q> I really want to know!\n\nThanks,\nEmma`,
       modelReply: `Hi Emma,\n\nThank you for your email. My hobby is playing the piano. I practice the piano every day after school. I started playing when I was six years old. It is very fun!\n\nYour friend`,
-      tips: "しゅみと、どのくらいやるかの2つにこたえよう"
+      tips: "趣味と、どのくらいやるかの2つに答えよう"
     },
     {
       from: "Tom",
       subject: "Visiting Japan",
       body: `Hi! I'm going to visit Japan next year. I'm so excited!\n\n<q>What place should I visit in Japan?</q> And <q>what is the best season to visit?</q>\n\nThanks,\nTom`,
       modelReply: `Hi Tom,\n\nThank you for your email. You should visit Kyoto. There are many beautiful temples there. The best season to visit is spring. You can see beautiful cherry blossoms in April.\n\nYour friend`,
-      tips: "おすすめのばしょと、いちばんいいきせつの2つにこたえよう"
+      tips: "おすすめの場所と一番いい季節の2つに答えよう"
     },
     {
       from: "Sarah",
       subject: "My Birthday Party",
       body: `Hi! I'm having a birthday party next Saturday. You are invited!\n\n<q>What gift do you want for your birthday?</q> And <q>what time should I come to the party?</q>\n\nSee you soon!\nSarah`,
       modelReply: `Hi Sarah,\n\nThank you for your email. Happy birthday! I think a nice book is a good gift. I like reading very much. Please come to the party at three o'clock. We will have cake and play games.\n\nYour friend`,
-      tips: "ほしいプレゼントと、なんじにくるかの2つにこたえよう"
+      tips: "欲しいプレゼントと何時に来るかの2つに答えよう"
     },
     {
       from: "Mike",
       subject: "New Pet",
       body: `Hi! Guess what? My parents said I can get a pet! I'm so happy!\n\n<q>What kind of pet should I get?</q> And <q>what name do you like for a pet?</q>\n\nPlease help me decide!\nMike`,
       modelReply: `Hi Mike,\n\nThank you for your email. That's great news! I think you should get a dog. Dogs are very friendly and fun. How about the name "Lucky"? I think it is a cute name for a pet.\n\nYour friend`,
-      tips: "どんなペットがいいかと、なまえの2つにこたえよう"
+      tips: "どんなペットがいいかと名前の2つに答えよう"
     },
     {
       from: "Lisa",
       subject: "Summer Vacation",
       body: `Hi! Summer vacation is coming soon. I can't wait!\n\n<q>Where do you want to go during summer vacation?</q> And <q>who will you go with?</q>\n\nTell me about your plans!\nLisa`,
       modelReply: `Hi Lisa,\n\nThank you for your email. I want to go to the beach during summer vacation. I love swimming in the sea. I will go with my family. We go to the beach every summer.\n\nYour friend`,
-      tips: "どこにいきたいかと、だれといくかの2つにこたえよう"
+      tips: "どこに行きたいかと誰と行くかの2つに答えよう"
     },
     {
       from: "Kevin",
       subject: "School Festival",
       body: `Hi! Our school festival is next month. Our class needs to decide what to do.\n\n<q>What should our class do at the school festival?</q> And <q>when is your school festival?</q>\n\nLet me know!\nKevin`,
       modelReply: `Hi Kevin,\n\nThank you for your email. I think your class should do a maid cafe. It is very popular and fun. My school festival is in October. We will have a dance show this year.\n\nYour friend`,
-      tips: "なにをするかと、がっこうさいはいつかの2つにこたえよう"
+      tips: "何をするかと学校祭はいつかの2つに答えよう"
     },
     {
       from: "Amy",
       subject: "Movie Night",
       body: `Hi! Let's watch a movie together this Friday night!\n\n<q>What kind of movies do you like?</q> And <q>can you tell me a good movie?</q>\n\nI can't wait!\nAmy`,
       modelReply: `Hi Amy,\n\nThank you for your email. I like action movies. They are very exciting. I think you should watch "Spider-Man." It is a really fun movie. Let's watch it together on Friday!\n\nYour friend`,
-      tips: "すきなえいがのジャンルと、おすすめのえいがの2つにこたえよう"
+      tips: "好きな映画のジャンルとおすすめの映画の2つに答えよう"
     },
     {
       from: "David",
       subject: "Sports Day",
       body: `Hi! Sports day is coming next week. I'm a little nervous.\n\n<q>What event will you join on sports day?</q> And <q>how do you practice for it?</q>\n\nGood luck!\nDavid`,
       modelReply: `Hi David,\n\nThank you for your email. I will join the relay race on sports day. I practice running every morning before school. I run around the park near my house. Let's both do our best!\n\nYour friend`,
-      tips: "どのきょうぎにでるかと、どうやってれんしゅうするかの2つにこたえよう"
+      tips: "どの競技に出るかとどう練習するかの2つに答えよう"
     },
     {
       from: "Sophie",
       subject: "Family Trip",
       body: `Hi! My family is planning a trip. I need some ideas.\n\n<q>Where is a good place for a family trip?</q> And <q>how many days should we travel?</q>\n\nThanks for your help!\nSophie`,
       modelReply: `Hi Sophie,\n\nThank you for your email. I think Okinawa is a great place for a family trip. You can swim and see beautiful fish. I think three days is good. You can enjoy the beach and visit many places.\n\nYour friend`,
-      tips: "いいばしょと、なんにちがいいかの2つにこたえよう"
+      tips: "いい場所と何日がいいかの2つに答えよう"
     },
     {
       from: "Jack",
       subject: "After School",
       body: `Hi! I have free time after school every day now. I want to do something.\n\n<q>What do you usually do after school?</q> And <q>what club should I join?</q>\n\nPlease give me advice!\nJack`,
       modelReply: `Hi Jack,\n\nThank you for your email. I usually do my homework and play video games after school. I think you should join the basketball club. It is very fun and you can make many friends.\n\nYour friend`,
-      tips: "ほうかごになにをするかと、どのクラブがいいかの2つにこたえよう"
+      tips: "放課後に何をするかとどのクラブがいいかの2つに答えよう"
     },
     {
       from: "Mia",
       subject: "English Study",
       body: `Hi! I want to get better at English. Can you help me?\n\n<q>How do you study English?</q> And <q>what is the best way to learn new words?</q>\n\nI need your advice!\nMia`,
       modelReply: `Hi Mia,\n\nThank you for your email. I study English by listening to English songs. I also watch English movies. The best way to learn new words is to use a notebook. Write new words every day and read them before bed.\n\nYour friend`,
-      tips: "えいごのべんきょうほうほうと、たんごのおぼえかたの2つにこたえよう"
+      tips: "英語の勉強方法と単語の覚え方の2つに答えよう"
     },
     {
       from: "Ryan",
       subject: "Cooking",
       body: `Hi! I started cooking last week. It's really fun!\n\n<q>Can you cook? What can you make?</q> And <q>what dish do you want to learn to cook?</q>\n\nTell me!\nRyan`,
       modelReply: `Hi Ryan,\n\nThank you for your email. Yes, I can cook. I can make curry and rice. It is easy and delicious. I want to learn to cook pasta. My mother makes great pasta, so I will ask her to teach me.\n\nYour friend`,
-      tips: "なにがつくれるかと、つくりたいりょうりの2つにこたえよう"
+      tips: "何が作れるかと作りたい料理の2つに答えよう"
     },
     {
       from: "Olivia",
       subject: "Music",
       body: `Hi! I love music. I listen to music every day.\n\n<q>What kind of music do you like?</q> And <q>can you play any instruments?</q>\n\nI want to know about you!\nOlivia`,
       modelReply: `Hi Olivia,\n\nThank you for your email. I like pop music. My favorite singer is very popular in Japan. I can play the guitar. I started learning it last year. I practice every weekend.\n\nYour friend`,
-      tips: "すきなおんがくのしゅるいと、がっきができるかの2つにこたえよう"
+      tips: "好きな音楽の種類と楽器ができるかの2つに答えよう"
     },
     {
       from: "Lucas",
       subject: "Winter Plans",
       body: `Hi! Winter vacation is coming soon. I love winter!\n\n<q>What do you like to do in winter?</q> And <q>what is your favorite winter food?</q>\n\nStay warm!\nLucas`,
       modelReply: `Hi Lucas,\n\nThank you for your email. I like to go skiing in winter. I go to the mountains with my family every year. My favorite winter food is hot pot. It is warm and delicious on cold days.\n\nYour friend`,
-      tips: "ふゆにすきなことと、ふゆのすきなたべものの2つにこたえよう"
+      tips: "冬に好きなことと冬の好きな食べ物の2つに答えよう"
     }
   ],
 
@@ -876,70 +999,70 @@ const QUESTIONS = {
       subject: "School Life in Japan",
       body: `Hi! I'm doing a project about schools in different countries.\n\nI'd like to know, <q>what is a typical school day like in Japan?</q> Also, <q>what is the most interesting subject you study and why?</q>\n\nI appreciate your help!\nChris`,
       modelReply: `Hi Chris,\n\nThank you for your email. A typical school day in Japan starts at 8:30 in the morning. We study six subjects and have a lunch break. After school, many students join club activities. The most interesting subject I study is science because we do many experiments. Last week, we made a small robot in class. It was really exciting.\n\nYour friend`,
-      tips: "にほんのがっこうのいちにちと、いちばんおもしろいかもくとそのりゆうをかこう"
+      tips: "日本の学校の一日と一番面白い科目とその理由を書こう"
     },
     {
       from: "Rachel",
       subject: "Environmental Issues",
       body: `Hi! Our school is starting an eco-project. I want to learn what students in Japan are doing.\n\n<q>What do you do to help the environment?</q> And <q>what environmental problem concerns you the most?</q>\n\nLet me know your thoughts!\nRachel`,
       modelReply: `Hi Rachel,\n\nThank you for your email. To help the environment, I always bring my own water bottle and shopping bag. I also separate garbage for recycling at home. The environmental problem that concerns me the most is plastic pollution in the ocean. I saw a documentary about sea animals eating plastic, and it made me very sad.\n\nYour friend`,
-      tips: "かんきょうのためにしていることと、いちばんしんぱいなかんきょうもんだいをかこう"
+      tips: "環境のためにしていることと一番心配な環境問題を書こう"
     },
     {
       from: "Daniel",
       subject: "Part-time Jobs",
       body: `Hi! Some of my classmates have started working part-time.\n\n<q>Do you think high school students should have part-time jobs?</q> Also, <q>what kind of job would you like to try and why?</q>\n\nI'd love to hear your opinion!\nDaniel`,
       modelReply: `Hi Daniel,\n\nThank you for your email. I think high school students can have part-time jobs if they can manage their time well. It is a good way to learn about society and earn money. I would like to try working at a bookstore because I love reading. I think I could learn about many different books and recommend them to customers.\n\nYour friend`,
-      tips: "アルバイトについてのいけんと、やってみたいしごととそのりゆうをかこう"
+      tips: "アルバイトについての意見とやってみたい仕事とその理由を書こう"
     },
     {
       from: "Kate",
       subject: "Technology in Daily Life",
       body: `Hi! I'm writing a blog post about how technology has changed our lives.\n\n<q>How has technology changed your daily life?</q> And <q>is there any technology you think we use too much?</q>\n\nThanks for sharing!\nKate`,
       modelReply: `Hi Kate,\n\nThank you for your email. Technology has changed my daily life a lot. I use my smartphone to study English with apps, and I can video call my friends who live far away. However, I think we use social media too much. Many people spend hours looking at their phones instead of talking to the people around them. I try to limit my screen time.\n\nYour friend`,
-      tips: "テクノロジーでかわったことと、つかいすぎだとおもうテクノロジーをかこう"
+      tips: "テクノロジーで変わったことと使いすぎだと思うテクノロジーを書こう"
     },
     {
       from: "James",
       subject: "Healthy Living",
       body: `Hi! I've been trying to live a healthier lifestyle recently.\n\n<q>What do you do to stay healthy?</q> And <q>what healthy habit do you think is the most important for students?</q>\n\nI need some motivation!\nJames`,
       modelReply: `Hi James,\n\nThank you for your email. To stay healthy, I exercise three times a week. I usually go jogging in the park or play tennis with my friends. I also try to eat vegetables every day. I think the most important healthy habit for students is getting enough sleep. Many students stay up late studying, but sleep is important for our brains and bodies.\n\nYour friend`,
-      tips: "けんこうのためにしていることと、がくせいにいちばんたいせつなしゅうかんをかこう"
+      tips: "健康のためにしていることと学生に一番大切な習慣を書こう"
     },
     {
       from: "Emily",
       subject: "Cultural Festival Ideas",
       body: `Hi! Our school's cultural festival is in two months. I'm the leader of our class committee.\n\n<q>What did your class do at your last cultural festival?</q> And <q>what do you think makes a cultural festival event successful?</q>\n\nI need ideas!\nEmily`,
       modelReply: `Hi Emily,\n\nThank you for your email. At our last cultural festival, our class opened a haunted house. We made scary decorations and wore costumes. It was very popular! I think a successful cultural festival event needs teamwork. Everyone in the class should have a job. Also, it's important to choose something that both the performers and visitors can enjoy.\n\nYour friend`,
-      tips: "まえのぶんかさいでなにをしたかと、せいこうのひけつをかこう"
+      tips: "前の文化祭で何をしたかと成功の秘訣を書こう"
     },
     {
       from: "Ben",
       subject: "Reading Habits",
       body: `Hi! My teacher says we should read more books, but I find it hard to start.\n\n<q>How often do you read, and what kind of books do you enjoy?</q> Also, <q>how can someone who doesn't like reading get interested in books?</q>\n\nHelp me out!\nBen`,
       modelReply: `Hi Ben,\n\nThank you for your email. I read about two books every month. I enjoy mystery novels because they are exciting and I can't stop reading them. If someone doesn't like reading, I think they should start with manga or short stories. Also, watching a movie based on a book can make you want to read the original story. You can also join a book club at school.\n\nYour friend`,
-      tips: "どのくらいよむかと、どくしょがすきになるほうほうをかこう"
+      tips: "どのくらい読むかと読書が好きになる方法を書こう"
     },
     {
       from: "Hannah",
       subject: "Future Career",
       body: `Hi! We had a career counseling session at school today, and now I'm thinking about my future.\n\n<q>What job do you want to have in the future and why?</q> Also, <q>what are you doing now to prepare for your future career?</q>\n\nI'm curious about your plans!\nHannah`,
       modelReply: `Hi Hannah,\n\nThank you for your email. I want to be a teacher in the future because I love helping people learn new things. I think it is a very meaningful job. To prepare for my future career, I am studying hard, especially English and math. I also volunteer at a children's learning center on Saturdays to get experience working with kids.\n\nYour friend`,
-      tips: "しょうらいのしごととそのりゆう、いまじゅんびしていることをかこう"
+      tips: "将来の仕事とその理由、今準備していることを書こう"
     },
     {
       from: "Sam",
       subject: "Travel Experience",
       body: `Hi! I love traveling and learning about new cultures.\n\n<q>What is the most memorable trip you have ever taken?</q> And <q>if you could travel anywhere in the world, where would you go and why?</q>\n\nTell me all about it!\nSam`,
       modelReply: `Hi Sam,\n\nThank you for your email. The most memorable trip I have ever taken was to Hokkaido with my family. We went skiing and ate delicious seafood. The snow was beautiful and I will never forget it. If I could travel anywhere, I would go to Australia because I want to see kangaroos and koalas in the wild. I also want to try surfing at Bondi Beach.\n\nYour friend`,
-      tips: "いちばんおもいでのりょこうと、いきたいばしょとそのりゆうをかこう"
+      tips: "一番思い出の旅行と行きたい場所とその理由を書こう"
     },
     {
       from: "Lily",
       subject: "Online Learning",
       body: `Hi! Since the pandemic, many schools have started using online learning.\n\n<q>What do you think are the advantages of online learning?</q> And <q>do you prefer studying at school or at home? Why?</q>\n\nI'm interested in your opinion!\nLily`,
       modelReply: `Hi Lily,\n\nThank you for your email. I think the advantages of online learning are that students can study at their own pace and watch lessons again if they don't understand. It also saves time because we don't need to travel to school. However, I prefer studying at school because I can ask teachers questions directly and study with my friends. It is easier to concentrate at school.\n\nYour friend`,
-      tips: "オンラインがくしゅうのりてんと、がっこうといえのどちらがすきかをかこう"
+      tips: "オンライン学習の利点と学校と家のどちらが好きかを書こう"
     }
   ],
 
@@ -948,52 +1071,52 @@ const QUESTIONS = {
     {
       topic: "Do you think students should use smartphones at school?",
       modelAnswer: `I think students should not use smartphones at school. I have two reasons. First, smartphones can be distracting. If students use their phones during class, they will not be able to focus on the lesson. Second, students should talk to their friends face to face during breaks. Using phones makes communication less personal.`,
-      tips: "さんせいかはんたいか、りゆうを2つかこう"
+      tips: "賛成か反対か、理由を2つ書こう"
     },
     {
       topic: "Do you think reading books is important for young people?",
       modelAnswer: `I think reading books is very important for young people. I have two reasons. First, reading books helps us learn new words and ideas. We can improve our vocabulary and writing skills. Second, books teach us about different cultures and ways of thinking. By reading, we can understand the world better.`,
-      tips: "だいじだとおもうかどうか、りゆうを2つかこう"
+      tips: "大事だと思うかどうか、理由を2つ書こう"
     },
     {
       topic: "Do you think people should eat breakfast every day?",
       modelAnswer: `I think people should eat breakfast every day. I have two reasons. First, breakfast gives us energy for the morning. Without it, we feel tired and cannot concentrate at school or work. Second, eating breakfast is good for our health. It helps our body work well and keeps us from eating too much at lunch.`,
-      tips: "まいにちあさごはんをたべるべきかどうか、りゆうを2つかこう"
+      tips: "毎日朝ごはんを食べるべきかどうか、理由を2つ書こう"
     },
     {
       topic: "Do you think it is better to live in the city or in the countryside?",
       modelAnswer: `I think it is better to live in the city. I have two reasons. First, there are more job opportunities in the city. People can find many kinds of work easily. Second, the city has better public transportation. We can go anywhere by train or bus, so we don't need a car.`,
-      tips: "としといなかのどちらがいいか、りゆうを2つかこう"
+      tips: "都市と田舎のどちらがいいか、理由を2つ書こう"
     },
     {
       topic: "Do you think students should study abroad?",
       modelAnswer: `I think students should study abroad. I have two reasons. First, studying abroad helps us improve our language skills. We can practice speaking English every day with native speakers. Second, we can learn about different cultures. Living in another country teaches us to be more open-minded and independent.`,
-      tips: "りゅうがくすべきかどうか、りゆうを2つかこう"
+      tips: "留学すべきかどうか、理由を2つ書こう"
     },
     {
       topic: "Do you think school uniforms are necessary?",
       modelAnswer: `I think school uniforms are necessary. I have two reasons. First, uniforms make all students look equal. No one has to worry about wearing expensive clothes. Second, uniforms help students focus on studying. If there are no uniforms, students might spend too much time thinking about fashion.`,
-      tips: "せいふくはひつようかどうか、りゆうを2つかこう"
+      tips: "制服は必要かどうか、理由を2つ書こう"
     },
     {
       topic: "Do you think children should learn to cook at a young age?",
       modelAnswer: `I think children should learn to cook at a young age. I have two reasons. First, cooking is an important life skill. If children learn to cook, they can take care of themselves when they grow up. Second, cooking helps children learn about healthy eating. They can understand what foods are good for their body.`,
-      tips: "こどもはりょうりをならうべきかどうか、りゆうを2つかこう"
+      tips: "子供は料理を習うべきかどうか、理由を2つ書こう"
     },
     {
       topic: "Do you think playing sports is more important than studying?",
       modelAnswer: `I do not think playing sports is more important than studying. I have two reasons. First, studying gives us knowledge and skills for our future jobs. We need good grades to enter a good university. Second, we can exercise in our free time, but we cannot easily study outside of school. However, I think both studying and sports are important for a balanced life.`,
-      tips: "スポーツとべんきょうのどちらがだいじか、りゆうを2つかこう"
+      tips: "スポーツと勉強のどちらが大事か、理由を2つ書こう"
     },
     {
       topic: "Do you think watching movies is a good way to learn English?",
       modelAnswer: `I think watching movies is a good way to learn English. I have two reasons. First, we can hear natural English spoken by native speakers. This helps us improve our listening skills and pronunciation. Second, movies are fun, so we can enjoy studying. If we enjoy learning, we will continue to study English every day.`,
-      tips: "えいがでえいごがまなべるかどうか、りゆうを2つかこう"
+      tips: "映画で英語が学べるかどうか、理由を2つ書こう"
     },
     {
       topic: "Do you think it is important for students to do volunteer work?",
       modelAnswer: `I think it is important for students to do volunteer work. I have two reasons. First, volunteer work teaches us to think about other people. We can learn to be kind and helpful to those in need. Second, it gives us experience that we cannot get in the classroom. We can learn teamwork and communication skills through volunteering.`,
-      tips: "ボランティアはだいじかどうか、りゆうを2つかこう"
+      tips: "ボランティアは大事かどうか、理由を2つ書こう"
     }
   ],
 
@@ -1002,52 +1125,52 @@ const QUESTIONS = {
     {
       topic: "Some people say that social media has a negative impact on young people. Do you agree with this opinion?",
       modelAnswer: `I agree that social media has a negative impact on young people. I have two reasons to support this opinion.\n\nFirst, social media can be harmful to mental health. Many young people compare themselves to others online and feel anxious or depressed. Studies have shown that spending too much time on social media leads to lower self-esteem, especially among teenagers who are easily influenced by images of perfect lifestyles.\n\nSecond, social media reduces the quality of face-to-face communication. Young people today prefer texting to talking in person. As a result, they may have difficulty building deep relationships and understanding other people's emotions. This can lead to feelings of loneliness even though they have many online friends.`,
-      tips: "SNSのわるいえいきょうにさんせいかはんたいか、りゆうを2つ、くわしくかこう"
+      tips: "SNSの悪い影響に賛成か反対か、理由を2つ詳しく書こう"
     },
     {
       topic: "It is sometimes said that people should work to live, not live to work. Do you agree with this idea?",
       modelAnswer: `I agree that people should work to live, not live to work. I have two reasons to support this opinion.\n\nFirst, working too much is bad for our health. People who spend most of their time at work often suffer from stress, lack of sleep, and other health problems. If we focus too much on our careers, we may lose our physical and mental well-being, which is more important than any job.\n\nSecond, spending time with family and friends is essential for happiness. No matter how successful we are at work, life feels empty without meaningful relationships. People should have enough free time to enjoy hobbies, travel, and create memories with the people they love.`,
-      tips: "はたらくことのバランスについて、りゆうを2つ、くわしくかこう"
+      tips: "働くことのバランスについて、理由を2つ詳しく書こう"
     },
     {
       topic: "Do you think that artificial intelligence will have a positive effect on society in the future?",
       modelAnswer: `I think that artificial intelligence will have a positive effect on society in the future. I have two reasons to support this opinion.\n\nFirst, AI can solve problems that are difficult for humans. For example, AI is already being used in medicine to detect diseases earlier and more accurately than human doctors. In the future, AI may help us find cures for serious illnesses like cancer, which would save millions of lives.\n\nSecond, AI can make our daily lives more convenient. Self-driving cars, smart home systems, and AI assistants can save us time on routine tasks. This means people will have more time to focus on creative and meaningful activities instead of repetitive work.`,
-      tips: "AIがしゃかいにいいえいきょうをあたえるかどうか、りゆうを2つ、くわしくかこう"
+      tips: "AIが社会にいい影響を与えるかどうか、理由を2つ詳しく書こう"
     },
     {
       topic: "Some people believe that all plastic bags should be banned. Do you agree with this opinion?",
       modelAnswer: `I agree that all plastic bags should be banned. I have two reasons to support this opinion.\n\nFirst, plastic bags cause serious environmental damage. They take hundreds of years to break down, and many of them end up in the ocean, where they harm marine animals. Sea turtles and fish often mistake plastic bags for food, which can kill them. Banning plastic bags would greatly reduce this pollution.\n\nSecond, there are already good alternatives to plastic bags. People can use reusable cloth bags or paper bags instead. In countries where plastic bags have been banned, people have quickly adapted to using eco-friendly alternatives. This shows that we do not really need plastic bags in our daily lives.`,
-      tips: "ビニールぶくろをきんしすべきかどうか、りゆうを2つ、くわしくかこう"
+      tips: "ビニール袋を禁止すべきかどうか、理由を2つ詳しく書こう"
     },
     {
       topic: "Do you think that the voting age should be lowered to 16?",
       modelAnswer: `I think that the voting age should be lowered to 16. I have two reasons to support this opinion.\n\nFirst, young people are affected by political decisions, so they should have a say in them. Issues like education policy, climate change, and job opportunities directly impact teenagers' futures. If they can vote, politicians will pay more attention to young people's needs and concerns.\n\nSecond, allowing 16-year-olds to vote would encourage them to become more interested in politics from an early age. If young people learn about political issues and participate in elections while they are still in school, they are more likely to become responsible and active citizens in the future.`,
-      tips: "せんきょけんを16さいにさげるべきかどうか、りゆうを2つ、くわしくかこう"
+      tips: "選挙権を16歳に下げるべきかどうか、理由を2つ詳しく書こう"
     },
     {
       topic: "It is often said that studying abroad is the best way to learn a foreign language. Do you agree?",
       modelAnswer: `I agree that studying abroad is the best way to learn a foreign language. I have two reasons to support this opinion.\n\nFirst, living in a foreign country forces you to use the language every day. When you go shopping, make friends, and attend classes in another language, you naturally improve your speaking and listening skills. This kind of immersion is much more effective than just studying from a textbook.\n\nSecond, studying abroad helps you understand the culture behind the language. Language and culture are closely connected, and by living in another country, you can learn expressions and customs that you would never learn in a classroom. This deeper understanding makes your communication more natural and meaningful.`,
-      tips: "りゅうがくがいちばんいいがいこくごがくしゅうほうほうかどうか、りゆうを2つ、くわしくかこう"
+      tips: "留学が一番いい外国語学習方法かどうか、理由を2つ詳しく書こう"
     },
     {
       topic: "Some people think that homework should be abolished in schools. Do you agree with this idea?",
       modelAnswer: `I do not agree that homework should be abolished in schools. I have two reasons to support this opinion.\n\nFirst, homework helps students review and remember what they learned in class. Without practice at home, students may quickly forget important concepts. By doing homework regularly, they can strengthen their understanding and prepare for exams more effectively.\n\nSecond, homework teaches students important skills like time management and self-discipline. When students plan their study time and complete assignments on their own, they develop habits that will help them succeed in university and in their future careers. These skills are just as important as academic knowledge.`,
-      tips: "しゅくだいをはいしすべきかどうか、りゆうを2つ、くわしくかこう"
+      tips: "宿題を廃止すべきかどうか、理由を2つ詳しく書こう"
     },
     {
       topic: "Do you think that people rely too much on the internet for information?",
       modelAnswer: `I think that people rely too much on the internet for information. I have two reasons to support this opinion.\n\nFirst, not all information on the internet is accurate. Anyone can post content online, and much of it is not checked by experts. As a result, people may believe false information and make bad decisions based on it. This is a serious problem, especially when it comes to health and news.\n\nSecond, relying on the internet has made people less willing to think for themselves. In the past, people would read books, do research, and form their own opinions. Today, many people simply accept the first answer they find on a search engine without questioning whether it is true or not.`,
-      tips: "インターネットにたよりすぎかどうか、りゆうを2つ、くわしくかこう"
+      tips: "インターネットに頼りすぎかどうか、理由を2つ詳しく書こう"
     },
     {
       topic: "Some people say that all children should learn to play a musical instrument. Do you agree?",
       modelAnswer: `I agree that all children should learn to play a musical instrument. I have two reasons to support this opinion.\n\nFirst, learning music improves children's brain development. Research has shown that playing an instrument strengthens memory, concentration, and problem-solving skills. These abilities help children perform better in other subjects like math and science as well.\n\nSecond, playing music teaches children patience and perseverance. Learning an instrument requires regular practice over a long period of time. Children learn that they need to work hard and not give up in order to improve. This important lesson can be applied to many other areas of their lives.`,
-      tips: "すべてのこどもががっきをならうべきかどうか、りゆうを2つ、くわしくかこう"
+      tips: "全ての子供が楽器を習うべきかどうか、理由を2つ詳しく書こう"
     },
     {
       topic: "Do you think that companies should allow employees to work from home permanently?",
       modelAnswer: `I think that companies should allow employees to work from home permanently. I have two reasons to support this opinion.\n\nFirst, working from home saves a lot of commuting time. Many people spend one or two hours traveling to the office every day. If they can work from home, they can use that time for family, exercise, or rest. This improves their quality of life and makes them happier and more productive.\n\nSecond, remote work is better for the environment. When fewer people commute by car or train, carbon dioxide emissions decrease. Also, companies can use smaller offices, which reduces energy consumption. In a time when we need to fight climate change, remote work is a practical solution.`,
-      tips: "ざいたくきんむをえいきゅうにみとめるべきかどうか、りゆうを2つ、くわしくかこう"
+      tips: "在宅勤務を永久に認めるべきかどうか、理由を2つ詳しく書こう"
     }
   ]
 };
@@ -1061,20 +1184,218 @@ const WORD_TARGETS = {
 
 // ===== SELF-CHECK ITEMS =====
 const SELF_CHECKS_EMAIL = [
-  "しつもんに ぜんぶ こたえた？",
-  "ぶんの はじめは おおもじ？",
-  "ピリオド (.) や クエスチョンマーク (?) をつけた？",
-  "Thank you for your email. をかいた？",
-  "もくひょうの ごすうに とどいた？"
+  "質問に全部答えた？",
+  "文の始めは大文字？",
+  "ピリオド (.) やクエスチョンマーク (?) を付けた？",
+  "Thank you for your email. を書いた？",
+  "目標の語数に届いた？"
 ];
 
 const SELF_CHECKS_ESSAY = [
-  "I think ... でいけんをかいた？",
-  "りゆうを 2つ かけた？ (First, ... Second, ...)",
-  "ぶんの はじめは おおもじ？",
-  "ピリオド (.) をつけた？",
-  "もくひょうの ごすうに とどいた？"
+  "I think ... で意見を書いた？",
+  "理由を2つ書けた？ (First, ... Second, ...)",
+  "文の始めは大文字？",
+  "ピリオド (.) を付けた？",
+  "目標の語数に届いた？"
 ];
+
+// ===== COMMON ENGLISH WORDS (for spell checking) =====
+const COMMON_WORDS = new Set([
+  // Pronouns & determiners
+  "i","me","my","mine","myself","you","your","yours","yourself","he","him","his","himself",
+  "she","her","hers","herself","it","its","itself","we","us","our","ours","ourselves",
+  "they","them","their","theirs","themselves","this","that","these","those","the","a","an",
+  // Be / have / do / modals
+  "am","is","are","was","were","be","been","being","have","has","had","having",
+  "do","does","did","doing","done","will","would","shall","should","can","could",
+  "may","might","must","need","dare","ought",
+  // Common verbs
+  "go","goes","went","gone","going","come","comes","came","coming",
+  "get","gets","got","gotten","getting","make","makes","made","making",
+  "take","takes","took","taken","taking","give","gives","gave","given","giving",
+  "know","knows","knew","known","knowing","think","thinks","thought","thinking",
+  "say","says","said","saying","see","sees","saw","seen","seeing",
+  "want","wants","wanted","wanting","use","uses","used","using",
+  "find","finds","found","finding","tell","tells","told","telling",
+  "ask","asks","asked","asking","work","works","worked","working",
+  "call","calls","called","calling","try","tries","tried","trying",
+  "leave","leaves","left","leaving","put","puts","putting",
+  "mean","means","meant","meaning","keep","keeps","kept","keeping",
+  "let","lets","letting","begin","begins","began","begun","beginning",
+  "show","shows","showed","shown","showing","hear","hears","heard","hearing",
+  "play","plays","played","playing","run","runs","ran","running",
+  "move","moves","moved","moving","live","lives","lived","living",
+  "believe","believes","believed","believing","bring","brings","brought","bringing",
+  "happen","happens","happened","happening","write","writes","wrote","written","writing",
+  "provide","provides","provided","providing","sit","sits","sat","sitting",
+  "stand","stands","stood","standing","lose","loses","lost","losing",
+  "pay","pays","paid","paying","meet","meets","met","meeting",
+  "include","includes","included","including","continue","continues","continued","continuing",
+  "set","sets","setting","learn","learns","learned","learnt","learning",
+  "change","changes","changed","changing","lead","leads","led","leading",
+  "understand","understands","understood","understanding",
+  "watch","watches","watched","watching","follow","follows","followed","following",
+  "stop","stops","stopped","stopping","create","creates","created","creating",
+  "speak","speaks","spoke","spoken","speaking","read","reads","reading",
+  "allow","allows","allowed","allowing","add","adds","added","adding",
+  "spend","spends","spent","spending","grow","grows","grew","grown","growing",
+  "open","opens","opened","opening","walk","walks","walked","walking",
+  "win","wins","won","winning","offer","offers","offered","offering",
+  "remember","remembers","remembered","remembering",
+  "love","loves","loved","loving","consider","considers","considered","considering",
+  "appear","appears","appeared","appearing","buy","buys","bought","buying",
+  "wait","waits","waited","waiting","serve","serves","served","serving",
+  "die","dies","died","dying","send","sends","sent","sending",
+  "expect","expects","expected","expecting","build","builds","built","building",
+  "stay","stays","stayed","staying","fall","falls","fell","fallen","falling",
+  "cut","cuts","cutting","reach","reaches","reached","reaching",
+  "kill","kills","killed","killing","remain","remains","remained","remaining",
+  "suggest","suggests","suggested","suggesting","raise","raises","raised","raising",
+  "pass","passes","passed","passing","sell","sells","sold","selling",
+  "require","requires","required","requiring","report","reports","reported","reporting",
+  "decide","decides","decided","deciding","pull","pulls","pulled","pulling",
+  "develop","develops","developed","developing",
+  "eat","eats","ate","eaten","eating","cook","cooks","cooked","cooking",
+  "drink","drinks","drank","drunk","drinking","sleep","sleeps","slept","sleeping",
+  "swim","swims","swam","swum","swimming","sing","sings","sang","sung","singing",
+  "dance","dances","danced","dancing","draw","draws","drew","drawn","drawing",
+  "teach","teaches","taught","teaching","study","studies","studied","studying",
+  "start","starts","started","starting","finish","finishes","finished","finishing",
+  "help","helps","helped","helping","like","likes","liked","liking",
+  "enjoy","enjoys","enjoyed","enjoying","feel","feels","felt","feeling",
+  "look","looks","looked","looking","talk","talks","talked","talking",
+  "listen","listens","listened","listening","travel","travels","traveled","travelling","traveling",
+  "visit","visits","visited","visiting","practice","practices","practiced","practicing",
+  "practise","practises","practised","practising",
+  "join","joins","joined","joining","agree","agrees","agreed","agreeing",
+  "disagree","disagrees","disagreed","disagreeing",
+  "improve","improves","improved","improving","reduce","reduces","reduced","reducing",
+  "increase","increases","increased","increasing","support","supports","supported","supporting",
+  "cause","causes","caused","causing","protect","protects","protected","protecting",
+  "save","saves","saved","saving","share","shares","shared","sharing",
+  "choose","chooses","chose","chosen","choosing","wear","wears","wore","worn","wearing",
+  "carry","carries","carried","carrying","pick","picks","picked","picking",
+  "hold","holds","held","holding","turn","turns","turned","turning",
+  "drive","drives","drove","driven","driving","fly","flies","flew","flown","flying",
+  "break","breaks","broke","broken","breaking","catch","catches","caught","catching",
+  "throw","throws","threw","thrown","throwing","fight","fights","fought","fighting",
+  "forget","forgets","forgot","forgotten","forgetting",
+  "hit","hits","hitting","hurt","hurts","hurting",
+  "hang","hangs","hung","hanging","wake","wakes","woke","woken","waking",
+  "ride","rides","rode","ridden","riding",
+  // Adjectives
+  "good","better","best","bad","worse","worst","great","big","bigger","biggest",
+  "small","smaller","smallest","long","longer","longest","short","shorter","shortest",
+  "old","older","oldest","young","younger","youngest","new","newer","newest",
+  "high","higher","highest","low","lower","lowest","large","larger","largest",
+  "important","more","most","different","same","little","few","many","much",
+  "own","other","another","right","left","wrong","first","second","third","last","next",
+  "early","earlier","earliest","late","later","latest","easy","easier","easiest",
+  "hard","harder","hardest","fast","faster","fastest","slow","slower","slowest",
+  "happy","happier","happiest","sad","beautiful","wonderful","terrible","horrible",
+  "nice","kind","cute","pretty","ugly","clean","dirty","hot","cold","warm","cool",
+  "interesting","boring","exciting","tired","busy","free","ready","possible","impossible",
+  "popular","famous","special","necessary","dangerous","safe","healthy","sick","ill",
+  "rich","poor","strong","weak","heavy","light","dark","bright","deep","wide","narrow",
+  "true","false","real","sure","certain","clear","simple","difficult","expensive","cheap",
+  "full","empty","afraid","sorry","glad","proud","quiet","loud","fun","funny","serious",
+  "delicious","favorite","favourite","amazing","awesome","perfect","terrible",
+  "convenient","useful","harmful","careful","meaningful","successful","creative",
+  "positive","negative","natural","environmental","traditional","modern","online",
+  "personal","social","political","public","private","local","foreign","international",
+  // Nouns
+  "time","year","people","way","day","man","woman","child","children","world",
+  "life","hand","part","place","case","week","company","system","program","question",
+  "work","job","government","number","night","point","home","water","room","mother",
+  "area","money","story","fact","month","lot","right","study","book","eye","word",
+  "business","issue","side","kind","head","house","service","friend","father","power",
+  "hour","game","line","end","member","members","law","car","city","community",
+  "name","president","team","minute","idea","body","information","back","parent",
+  "parents","face","others","level","office","door","health","person","art","war",
+  "history","party","result","change","morning","reason","research","girl","guy",
+  "food","moment","air","teacher","force","education","student","students","class",
+  "school","schools","family","families","country","countries","language","languages",
+  "music","movie","movies","sport","sports","animal","animals","dog","dogs","cat","cats",
+  "fish","bird","tree","flower","garden","park","beach","sea","ocean","river","mountain",
+  "island","summer","winter","spring","autumn","season","weather","rain","snow","sun",
+  "future","past","present","problem","problems","solution","solutions","opinion","opinions",
+  "experience","experiences","skill","skills","ability","knowledge","technology","computer",
+  "internet","phone","smartphone","environment","nature","earth","energy","pollution",
+  "culture","cultures","society","communication","relationship","relationships",
+  "hobby","hobbies","vacation","holiday","trip","travel","breakfast","lunch","dinner",
+  "meal","restaurant","kitchen","cooking","recipe","ingredient","vegetable","vegetables",
+  "fruit","meat","rice","bread","cake","coffee","tea","milk","juice","sugar","salt",
+  "paper","plastic","bag","bottle","clothes","uniform","uniforms","hat","shoes",
+  "bike","bicycle","bus","train","airplane","station","airport","hospital","library",
+  "museum","church","temple","festival","event","concert","performance","practice",
+  "exercise","test","exam","homework","lesson","lessons","subject","math","mathematics",
+  "science","english","japanese","piano","guitar","violin","instrument","instruments",
+  "club","activity","activities","volunteer","volunteering",
+  "group","example","plan","plans","effect","effects","advantage","advantages",
+  "disadvantage","disadvantages","influence","impact","opportunity","opportunities",
+  // Prepositions & conjunctions & adverbs
+  "in","on","at","to","for","with","from","by","about","as","into","through",
+  "during","before","after","above","below","between","under","over","up","down",
+  "out","off","of","and","but","or","nor","so","yet","because","since","although",
+  "though","while","when","where","if","then","than","also","too","very","really",
+  "just","still","already","always","never","sometimes","often","usually","already",
+  "again","here","there","now","today","tomorrow","yesterday","soon","ago",
+  "not","no","yes","well","however","therefore","instead","especially","actually",
+  "probably","maybe","perhaps","finally","suddenly","recently","enough","almost",
+  "quite","rather","even","else","together","away","back","forward",
+  "around","along","across","behind","beside","near","far","inside","outside",
+  // Linking / transition words
+  "first","second","third","finally","also","moreover","furthermore","besides",
+  "however","nevertheless","although","therefore","consequently","thus","hence",
+  "meanwhile","otherwise","instead","similarly","likewise","additionally",
+  "specifically","particularly","generally","overall","basically",
+  // Question words
+  "what","which","who","whom","whose","where","when","why","how",
+  // Numbers as words
+  "one","two","three","four","five","six","seven","eight","nine","ten",
+  "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen",
+  "nineteen","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety",
+  "hundred","thousand","million",
+  // Common contractions parts
+  "don","doesn","didn","won","wouldn","can","couldn","shouldn","isn","aren","wasn",
+  "weren","hasn","haven","hadn","ll","ve","re","nt","t","s","d","m",
+  // Additional useful words
+  "ok","okay","please","thank","thanks","sorry","hello","hi","dear","bye","goodbye",
+  "welcome","congratulations","let","every","each","both","either","neither","all",
+  "some","any","no","none","such","only","own","same","different","able",
+  "according","actually","age","among","attention","available","away",
+  "quickly","slowly","easily","happily","carefully","clearly","recently","especially",
+  "directly","certainly","seriously","mainly","simply",
+  "everything","everyone","everybody","everywhere","something","someone","somebody",
+  "somewhere","anything","anyone","anybody","anywhere","nothing","nobody","nowhere",
+  "mr","mrs","ms","dr","st","ave",
+  "cannot","gonna","wanna","gotta","kinda","sorta",
+  "self","itself","myself","yourself","himself","herself","ourselves","themselves",
+  "o","clock","per","cent","percent","etc",
+  // Topic-specific: school, environment, tech
+  "smartphone","smartphones","laptop","laptops","tablet","robot","robots",
+  "recycling","recycle","recycled","reduce","reuse","pollution","carbon","dioxide",
+  "emission","emissions","global","warming","climate","fossil","fuel","renewable",
+  "solar","electricity","nuclear","waste","ecosystem","biodiversity",
+  "uniform","homework","textbook","textbooks","curriculum","campus","dormitory",
+  "scholarship","degree","diploma","certificate","tutor","tutoring",
+  "career","salary","wage","employee","employees","employer","employers",
+  "interview","resume","promotion","retirement","commute","commuting",
+  "mental","physical","psychological","emotional","anxiety","depression","stress",
+  "ban","banned","banning","abolish","abolished","abolishing",
+  "vote","voting","voter","voters","election","elections","candidate","candidates",
+  "democracy","democratic","citizen","citizens","policy","policies",
+  "media","newspaper","magazine","article","blog","website","platform",
+  "impression","express","expression","experience","opinion","perspective",
+  "recommend","recommendation","prefer","preference","advantage","disadvantage",
+  "concentrate","concentration","focus","attention","distract","distracting","distraction",
+  "independent","independence","responsible","responsibility","mature","maturity",
+  "communicate","communication","conversation","discussion","debate","argue","argument",
+  "original","creative","creativity","imagination","inspire","inspiration",
+  "achieve","achievement","goal","success","effort","challenge","overcome",
+  "respect","value","tradition","custom","diversity","equality","freedom","justice",
+  "sushi","ramen","tempura","kimono","anime","manga","karate","judo","samurai","ninja"
+]);
 
 // ===== APP STATE =====
 let state = {
@@ -1263,8 +1584,8 @@ function startPractice() {
   const questions = QUESTIONS[key];
 
   // Update header
-  const gradeLabel = state.grade === '3' ? '3きゅう' : state.grade === 'pre2' ? 'じゅん2きゅう' : '2きゅう';
-  const modeLabel = state.mode === 'email' ? 'Eメールがえしん' : 'いけんぶん';
+  const gradeLabel = state.grade === '3' ? '3級' : state.grade === 'pre2' ? '準2級' : '2級';
+  const modeLabel = state.mode === 'email' ? 'Eメール返信' : '意見文';
   document.getElementById('practiceTitle').textContent = `${gradeLabel} ${modeLabel}`;
 
   // Progress
@@ -1284,7 +1605,7 @@ function startPractice() {
 
   // Word target
   const target = WORD_TARGETS[state.grade];
-  document.getElementById('wordTarget').textContent = `もくひょう: ${target.label}語`;
+  document.getElementById('wordTarget').textContent = `目標: ${target.label}語`;
 
   // Reset textarea
   const textarea = document.getElementById('writingInput');
@@ -1333,23 +1654,23 @@ function renderStructureGuide() {
   const card = document.getElementById('structureCard');
   if (state.mode === 'email') {
     card.innerHTML = `
-      <div class="structure-title">&#x1F4DD; かきかたガイド</div>
+      <div class="structure-title">&#x1F4DD; 書き方ガイド</div>
       <ol class="structure-steps">
-        <li data-num="1">Hi [なまえ], でかきはじめる</li>
-        <li data-num="2">Thank you for your email. をかく</li>
-        <li data-num="3">1つめの しつもんに こたえる</li>
-        <li data-num="4">2つめの しつもんに こたえる</li>
-        <li data-num="5">Your friend, でおわる</li>
+        <li data-num="1">Hi [名前], で書き始める</li>
+        <li data-num="2">Thank you for your email. を書く</li>
+        <li data-num="3">1つ目の質問に答える</li>
+        <li data-num="4">2つ目の質問に答える</li>
+        <li data-num="5">Your friend, で終わる</li>
       </ol>
     `;
   } else {
     card.innerHTML = `
-      <div class="structure-title">&#x1F4DD; かきかたガイド</div>
+      <div class="structure-title">&#x1F4DD; 書き方ガイド</div>
       <ol class="structure-steps">
-        <li data-num="1">I think ... (じぶんのいけん)</li>
-        <li data-num="2">First, ... (りゆう1)</li>
-        <li data-num="3">Second, ... (りゆう2)</li>
-        ${state.grade === '2' ? '<li data-num="4">くわしい せつめいや れいを たす</li>' : ''}
+        <li data-num="1">I think ... (自分の意見)</li>
+        <li data-num="2">First, ... (理由1)</li>
+        <li data-num="3">Second, ... (理由2)</li>
+        ${state.grade === '2' ? '<li data-num="4">詳しい説明や例を足す</li>' : ''}
       </ol>
     `;
   }
@@ -1367,9 +1688,9 @@ function updateTimer() {
 document.getElementById('timerBadge').addEventListener('click', () => {
   state.timerRunning = !state.timerRunning;
   if (!state.timerRunning) {
-    showToast('タイマー ていし');
+    showToast('タイマー停止');
   } else {
-    showToast('タイマー さいかい');
+    showToast('タイマー再開');
   }
 });
 
@@ -1405,6 +1726,380 @@ document.getElementById('submitBtn').addEventListener('click', () => {
   showReview();
 });
 
+// ===== AUTO GRADING ENGINE =====
+function gradeEssay(text, question, mode) {
+  const feedback = [];
+  let scores = { wordCount: 0, capitalization: 0, punctuation: 0, content: 0, grammar: 0 };
+
+  if (!text || text.trim().length === 0) {
+    feedback.push({ type: 'error', message: '解答が入力されていません。' });
+    return { feedback, score: 0, scores };
+  }
+
+  const sentences = text.split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 0);
+  const words = text.trim().split(/\s+/).filter(w => w.length > 0);
+  const wordCount = words.length;
+  const target = WORD_TARGETS[state.grade];
+  const lowerText = text.toLowerCase();
+
+  // ===== 1. Word Count Check (20 points) =====
+  if (wordCount >= target.min && wordCount <= target.max) {
+    scores.wordCount = 20;
+    feedback.push({ type: 'good', message: `語数が目標範囲内です (${wordCount}語 / 目標${target.label}語)` });
+  } else if (wordCount < target.min) {
+    const ratio = wordCount / target.min;
+    scores.wordCount = Math.round(20 * Math.min(ratio, 1));
+    if (wordCount < target.min * 0.5) {
+      feedback.push({ type: 'error', message: `語数が足りません (${wordCount}語 / 目標${target.label}語)。もっと詳しく書こう！` });
+    } else {
+      feedback.push({ type: 'warning', message: `語数がやや少なめです (${wordCount}語 / 目標${target.label}語)。あと少し書き足そう！` });
+    }
+  } else {
+    scores.wordCount = 15; // slightly over is ok
+    feedback.push({ type: 'warning', message: `語数が多めです (${wordCount}語 / 目標${target.label}語)。少しコンパクトにしよう。` });
+  }
+
+  // ===== 2. Capitalization Check (15 points) =====
+  let capErrors = 0;
+  let capErrorExamples = [];
+
+  // Check first word of text
+  if (text.length > 0 && text[0] !== text[0].toUpperCase() && /[a-z]/.test(text[0])) {
+    capErrors++;
+    const firstWord = words[0] || '';
+    capErrorExamples.push(`'${firstWord}' → '${firstWord.charAt(0).toUpperCase() + firstWord.slice(1)}'`);
+  }
+
+  // Check first word after sentence-ending punctuation
+  const sentenceStarts = text.matchAll(/[.!?]\s+([a-z])/g);
+  for (const match of sentenceStarts) {
+    capErrors++;
+    if (capErrorExamples.length < 3) {
+      capErrorExamples.push(`'...${match[0]}' → 文の始めを大文字に`);
+    }
+  }
+
+  // Check "i" used as pronoun (standalone)
+  const iErrors = text.match(/\b(?<!['])(i)\b(?!\s*['.])/g);
+  if (iErrors) {
+    const iAlone = text.match(/(?:^|\s)(i)(?:\s|[,.]|$)/g);
+    if (iAlone) {
+      capErrors += iAlone.length;
+      if (capErrorExamples.length < 3) {
+        capErrorExamples.push(`'i' → 'I'（主語のIは常に大文字）`);
+      }
+    }
+  }
+
+  if (capErrors === 0) {
+    scores.capitalization = 15;
+    feedback.push({ type: 'good', message: '大文字の使い方が正しいです！' });
+  } else {
+    scores.capitalization = Math.max(0, 15 - capErrors * 3);
+    feedback.push({
+      type: 'error',
+      message: `文の始めを大文字にしよう`,
+      fix: capErrorExamples.join('、')
+    });
+  }
+
+  // ===== 3. Punctuation Check (15 points) =====
+  let punctErrors = 0;
+  // Split by apparent sentence boundaries
+  const roughSentences = text.split(/\n+/).flatMap(line => {
+    // Split on sentence-ending punctuation or detect missing ones
+    return line.split(/(?<=[.!?])\s+/);
+  }).filter(s => s.trim().length > 0);
+
+  let missingPunct = 0;
+  for (const s of roughSentences) {
+    const trimmed = s.trim();
+    if (trimmed.length > 0 && !/[.!?,]$/.test(trimmed) && trimmed.length > 10) {
+      // Long segment without ending punctuation
+      missingPunct++;
+    }
+  }
+
+  if (missingPunct === 0) {
+    scores.punctuation = 15;
+    feedback.push({ type: 'good', message: '句読点（ピリオド・クエスチョンマーク）が正しく使われています！' });
+  } else {
+    scores.punctuation = Math.max(0, 15 - missingPunct * 4);
+    feedback.push({
+      type: 'error',
+      message: `文末にピリオド (.) やクエスチョンマーク (?) を付けよう`,
+      fix: `${missingPunct}箇所で句読点が不足しています`
+    });
+  }
+
+  // ===== 4. Content Check (30 points) =====
+  if (mode === 'email') {
+    let contentScore = 0;
+
+    // Check greeting
+    if (/^hi\b/i.test(text.trim()) || /^dear\b/i.test(text.trim())) {
+      contentScore += 6;
+      feedback.push({ type: 'good', message: '挨拶（Hi/Dear）がきちんと書けています！' });
+    } else {
+      feedback.push({ type: 'warning', message: 'Hi [名前], で始めよう' });
+    }
+
+    // Check thank you
+    if (/thank\s+you\s+(for\s+)?(your\s+)?email/i.test(text)) {
+      contentScore += 6;
+      feedback.push({ type: 'good', message: '"Thank you for your email." が書けています！' });
+    } else {
+      feedback.push({ type: 'warning', message: '"Thank you for your email." を入れよう' });
+    }
+
+    // Check closing
+    if (/your\s+friend/i.test(text) || /best\s+(wishes|regards)/i.test(text) || /sincerely/i.test(text) || /see\s+you/i.test(text)) {
+      contentScore += 6;
+      feedback.push({ type: 'good', message: '締めの言葉が書けています！' });
+    } else {
+      feedback.push({ type: 'warning', message: '"Your friend," などの締めの言葉を入れよう' });
+    }
+
+    // Check question coverage (extract keywords from questions in the email body)
+    const questionMatches = question.body.match(/<q>(.*?)<\/q>/g) || [];
+    let answeredCount = 0;
+    for (const qTag of questionMatches) {
+      const qText = qTag.replace(/<\/?q>/g, '').toLowerCase();
+      // Extract key nouns/verbs from the question
+      const keyWords = qText.split(/\s+/).filter(w =>
+        w.length > 3 && !['what','your','this','that','with','from','about','have','does','will','should','which','when','where','also','please','tell'].includes(w)
+      );
+      const answered = keyWords.some(kw => lowerText.includes(kw));
+      if (answered) answeredCount++;
+    }
+
+    if (questionMatches.length > 0) {
+      const qScore = Math.round(12 * (answeredCount / questionMatches.length));
+      contentScore += qScore;
+      if (answeredCount >= questionMatches.length) {
+        feedback.push({ type: 'good', message: '全ての質問に答えられています！' });
+      } else {
+        feedback.push({
+          type: 'warning',
+          message: `質問${questionMatches.length}つ中${answeredCount}つに答えています。全部の質問に答えよう！`
+        });
+      }
+    }
+
+    scores.content = Math.min(30, contentScore);
+
+  } else {
+    // Essay mode
+    let contentScore = 0;
+
+    // Check opinion stated
+    if (/i\s+think/i.test(text) || /i\s+believe/i.test(text) || /in\s+my\s+opinion/i.test(text) || /i\s+(do\s+not|don'?t)\s+think/i.test(text) || /i\s+agree/i.test(text) || /i\s+disagree/i.test(text)) {
+      contentScore += 10;
+      feedback.push({ type: 'good', message: '自分の意見がしっかり述べられています！' });
+    } else {
+      feedback.push({ type: 'warning', message: '"I think ..." や "I believe ..." で自分の意見を述べよう' });
+    }
+
+    // Check reasons
+    const hasFirst = /\bfirst(ly)?\b/i.test(text);
+    const hasSecond = /\bsecond(ly)?\b/i.test(text);
+    const hasBecause = /\bbecause\b/i.test(text);
+    const hasAlso = /\balso\b/i.test(text);
+    const hasMoreover = /\bmoreover\b/i.test(text);
+    const hasFurthermore = /\bfurthermore\b/i.test(text);
+    const hasReason = /\breason/i.test(text);
+
+    let reasonCount = 0;
+    if (hasFirst) reasonCount++;
+    if (hasSecond) reasonCount++;
+    if (!hasFirst && !hasSecond && hasBecause) reasonCount = 1;
+    if (hasAlso || hasMoreover || hasFurthermore) reasonCount = Math.max(reasonCount, 1);
+
+    if (reasonCount >= 2) {
+      contentScore += 12;
+      feedback.push({ type: 'good', message: '理由が2つ述べられています！ (First, ... Second, ...)' });
+    } else if (reasonCount === 1) {
+      contentScore += 6;
+      feedback.push({ type: 'warning', message: '理由をもう1つ追加しよう。"First, ... Second, ..." の形で書くと良い。' });
+    } else {
+      feedback.push({ type: 'warning', message: '"First, ..." "Second, ..." を使って理由を2つ書こう' });
+    }
+
+    // Check sentence count
+    const sentCount = sentences.length;
+    if (sentCount >= 3) {
+      contentScore += 8;
+      feedback.push({ type: 'good', message: `${sentCount}文で構成されています。` });
+    } else {
+      contentScore += Math.round(8 * (sentCount / 3));
+      feedback.push({ type: 'warning', message: `文が${sentCount}文しかありません。3文以上書こう。` });
+    }
+
+    scores.content = Math.min(30, contentScore);
+  }
+
+  // ===== 5. Grammar Check (20 points) =====
+  let grammarErrors = 0;
+  let grammarFeedback = [];
+
+  // Subject-verb agreement errors
+  const svErrors = [
+    { pattern: /\bi\s+is\b/gi, fix: '"I is" → "I am"' },
+    { pattern: /\bi\s+was\s+agree/gi, fix: '"I was agree" → "I agreed"' },
+    { pattern: /\bshe\s+have\b/gi, fix: '"She have" → "She has"' },
+    { pattern: /\bhe\s+have\b/gi, fix: '"He have" → "He has"' },
+    { pattern: /\bit\s+have\b/gi, fix: '"It have" → "It has"' },
+    { pattern: /\bshe\s+don['']t\b/gi, fix: '"She don\'t" → "She doesn\'t"' },
+    { pattern: /\bhe\s+don['']t\b/gi, fix: '"He don\'t" → "He doesn\'t"' },
+    { pattern: /\bthey\s+is\b/gi, fix: '"They is" → "They are"' },
+    { pattern: /\bwe\s+is\b/gi, fix: '"We is" → "We are"' },
+    { pattern: /\byou\s+is\b/gi, fix: '"You is" → "You are"' },
+    { pattern: /\bi\s+are\b/gi, fix: '"I are" → "I am"' },
+    { pattern: /\bi\s+has\b/gi, fix: '"I has" → "I have"' },
+  ];
+
+  for (const rule of svErrors) {
+    if (rule.pattern.test(text)) {
+      grammarErrors++;
+      grammarFeedback.push(rule.fix);
+    }
+  }
+
+  // Article errors: "a" before vowel sound
+  const aVowelErrors = text.match(/\ba\s+[aeiou]\w*/gi);
+  if (aVowelErrors) {
+    for (const match of aVowelErrors) {
+      const word = match.replace(/^a\s+/i, '');
+      // Exclude "a unique", "a university", "a useful" etc. (u sounds like "yoo")
+      if (!/^(uni|use|user|usual|unique|united|union|uniform|universal|utility|utensil)/i.test(word) &&
+          !/^(one|once|European)/i.test(word)) {
+        grammarErrors++;
+        if (grammarFeedback.length < 5) {
+          grammarFeedback.push(`"a ${word}" → "an ${word}"`);
+        }
+      }
+    }
+  }
+
+  // Common mistakes
+  const commonMistakes = [
+    { pattern: /\bi\s+am\s+agree\b/gi, fix: '"I am agree" → "I agree"' },
+    { pattern: /\bmore\s+better\b/gi, fix: '"more better" → "better"' },
+    { pattern: /\bmore\s+worse\b/gi, fix: '"more worse" → "worse"' },
+    { pattern: /\bmore\s+easier\b/gi, fix: '"more easier" → "easier"' },
+    { pattern: /\bmore\s+bigger\b/gi, fix: '"more bigger" → "bigger"' },
+    { pattern: /\bmore\s+faster\b/gi, fix: '"more faster" → "faster"' },
+    { pattern: /\bmost\s+best\b/gi, fix: '"most best" → "best"' },
+    { pattern: /\bmost\s+worst\b/gi, fix: '"most worst" → "worst"' },
+    { pattern: /\bdoesn['']t\s+\w+s\b/gi, fix: '"doesn\'t + 動詞s" → "doesn\'t + 動詞の原形"（例: doesn\'t likes → doesn\'t like）' },
+    { pattern: /\bdon['']t\s+\w+s\b/gi, fix: '"don\'t + 動詞s" → "don\'t + 動詞の原形"（例: don\'t likes → don\'t like）' },
+    { pattern: /\bi\s+i\b/gi, fix: '"I I" → 主語が重複しています' },
+    { pattern: /\bhe\s+he\b/gi, fix: '"He he" → 主語が重複しています' },
+    { pattern: /\bshe\s+she\b/gi, fix: '"She she" → 主語が重複しています' },
+    { pattern: /\bthey\s+they\b/gi, fix: '"They they" → 主語が重複しています' },
+    { pattern: /\bcan\s+to\b/gi, fix: '"can to ..." → "can ..."（canの後にtoは不要）' },
+    { pattern: /\bmust\s+to\b/gi, fix: '"must to ..." → "must ..."（mustの後にtoは不要）' },
+    { pattern: /\bshould\s+to\b/gi, fix: '"should to ..." → "should ..."（shouldの後にtoは不要）' },
+    { pattern: /\bwill\s+to\b/gi, fix: '"will to ..." → "will ..."（willの後にtoは不要）' },
+    { pattern: /\bgo\s+to\s+home\b/gi, fix: '"go to home" → "go home"' },
+    { pattern: /\bwent\s+to\s+home\b/gi, fix: '"went to home" → "went home"' },
+    { pattern: /\bcome\s+to\s+home\b/gi, fix: '"come to home" → "come home"' },
+  ];
+
+  for (const rule of commonMistakes) {
+    if (rule.pattern.test(text)) {
+      grammarErrors++;
+      grammarFeedback.push(rule.fix);
+    }
+  }
+
+  // Simple spelling check: check words against common word list
+  let spellingErrors = [];
+  for (const word of words) {
+    const cleaned = word.replace(/[^a-zA-Z']/g, '').toLowerCase();
+    if (cleaned.length <= 1) continue;
+    if (cleaned === '') continue;
+    // Skip proper nouns (capitalized words that aren't sentence starters)
+    if (word[0] === word[0].toUpperCase() && word[0] !== word[0].toLowerCase()) continue;
+    // Skip contractions
+    if (cleaned.includes("'")) {
+      const parts = cleaned.split("'");
+      if (parts.every(p => COMMON_WORDS.has(p) || p.length <= 2)) continue;
+    }
+    if (!COMMON_WORDS.has(cleaned)) {
+      // Be lenient: only flag if it looks like a real attempt at an English word
+      if (/^[a-z]+$/.test(cleaned) && cleaned.length > 2) {
+        spellingErrors.push(word.replace(/[^a-zA-Z']/g, ''));
+      }
+    }
+  }
+
+  // Limit spelling feedback to avoid overwhelming
+  if (spellingErrors.length > 0) {
+    const uniqueSpelling = [...new Set(spellingErrors)].slice(0, 5);
+    // Don't count too harshly - many valid words won't be in our list
+    const spellingPenalty = Math.min(uniqueSpelling.length, 3);
+    grammarErrors += spellingPenalty;
+    feedback.push({
+      type: 'warning',
+      message: `スペルを確認しよう`,
+      fix: uniqueSpelling.map(w => `"${w}"`).join(', ') + ' ← 辞書にない単語です（固有名詞の場合は問題ありません）'
+    });
+  }
+
+  if (grammarErrors === 0) {
+    scores.grammar = 20;
+    feedback.push({ type: 'good', message: '文法的なミスが見つかりませんでした！' });
+  } else {
+    scores.grammar = Math.max(0, 20 - grammarErrors * 4);
+    for (const gf of grammarFeedback.slice(0, 4)) {
+      feedback.push({ type: 'error', message: '文法エラー', fix: gf });
+    }
+  }
+
+  // ===== Calculate total score =====
+  const totalScore = Math.min(100, scores.wordCount + scores.capitalization + scores.punctuation + scores.content + scores.grammar);
+
+  // Be generous: add bonus for effort
+  const finalScore = Math.min(100, totalScore + (wordCount >= 5 ? 5 : 0));
+
+  return { feedback, score: finalScore, scores };
+}
+
+function highlightErrors(text) {
+  let highlighted = text;
+
+  // Highlight uncapitalized sentence starts
+  highlighted = highlighted.replace(/([.!?]\s+)([a-z])/g, (match, punct, letter) => {
+    return punct + '<mark>' + letter + '</mark>';
+  });
+
+  // Highlight "i" used as standalone pronoun (lowercase)
+  highlighted = highlighted.replace(/(^|\s)(i)(\s|[,.]|$)/g, (match, before, i, after) => {
+    return before + '<mark>' + i + '</mark>' + after;
+  });
+
+  // Highlight common grammar errors
+  const errorPatterns = [
+    /\bi\s+is\b/gi,
+    /\bi\s+am\s+agree\b/gi,
+    /\bmore\s+better\b/gi,
+    /\bmore\s+worse\b/gi,
+    /\bshe\s+have\b/gi,
+    /\bhe\s+have\b/gi,
+    /\bi\s+i\b/gi,
+    /\bcan\s+to\b/gi,
+    /\bmust\s+to\b/gi,
+    /\bgo\s+to\s+home\b/gi,
+  ];
+
+  for (const pattern of errorPatterns) {
+    highlighted = highlighted.replace(pattern, match => `<mark>${match}</mark>`);
+  }
+
+  return highlighted;
+}
+
 // ===== REVIEW SCREEN =====
 function showReview() {
   const key = getQuestionKey();
@@ -1413,11 +2108,14 @@ function showReview() {
   const words = answer ? answer.split(/\s+/).filter(w => w.length > 0).length : 0;
   const target = WORD_TARGETS[state.grade];
 
-  // Calculate stars based on word count
+  // Run auto grading
+  const gradeResult = gradeEssay(answer, q, state.mode);
+
+  // Calculate stars based on auto score
   let stars = 1;
-  if (words >= target.min && words <= target.max) {
+  if (gradeResult.score >= 70) {
     stars = 3;
-  } else if (words >= target.min * 0.7) {
+  } else if (gradeResult.score >= 40) {
     stars = 2;
   }
 
@@ -1427,11 +2125,46 @@ function showReview() {
   ).join('');
   document.getElementById('reviewStars').innerHTML = starsHtml;
 
-  const msgs = ['もうすこし がんばろう!', 'いいかんじ!', 'すばらしい!'];
+  const msgs = ['もう少し頑張ろう!', 'いい感じ!', '素晴らしい!'];
   document.getElementById('reviewMsg').textContent = msgs[stars - 1];
 
-  // Your answer
-  document.getElementById('yourAnswer').textContent = answer;
+  // Show score circle
+  const scoreRing = document.getElementById('scoreRing');
+  const circumference = 2 * Math.PI * 50; // r=50
+  const offset = circumference - (gradeResult.score / 100) * circumference;
+  scoreRing.style.strokeDasharray = circumference;
+  // Animate after a short delay
+  setTimeout(() => {
+    scoreRing.style.strokeDashoffset = offset;
+    // Color based on score
+    if (gradeResult.score >= 70) {
+      scoreRing.style.stroke = '#43E97B';
+    } else if (gradeResult.score >= 40) {
+      scoreRing.style.stroke = '#FFC107';
+    } else {
+      scoreRing.style.stroke = '#FF6584';
+    }
+  }, 100);
+
+  document.getElementById('scoreNumber').textContent = gradeResult.score;
+
+  // Render feedback items
+  const feedbackList = document.getElementById('feedbackList');
+  feedbackList.innerHTML = gradeResult.feedback.map(item => {
+    const icon = item.type === 'error' ? '\uD83D\uDD34' : item.type === 'warning' ? '\uD83D\uDFE1' : '\uD83D\uDFE2';
+    return `
+      <div class="feedback-item ${item.type}">
+        <span class="feedback-icon">${icon}</span>
+        <div class="feedback-text">
+          ${item.message}
+          ${item.fix ? `<span class="feedback-fix">${item.fix}</span>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Your answer (with error highlights)
+  document.getElementById('yourAnswer').innerHTML = highlightErrors(answer);
   const rcEl = document.getElementById('reviewWordCount');
   rcEl.textContent = words;
   if (words < target.min) rcEl.className = 'word-count under';
