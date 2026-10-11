@@ -1526,23 +1526,27 @@ function updateModeAvailability() {
   // Reset
   emailBtn.classList.remove('disabled');
   essayBtn.classList.remove('disabled');
+  emailBtn.title = '';
+  essayBtn.title = '';
+  modeSelector.querySelectorAll('.sel-btn').forEach(b => b.classList.remove('selected'));
 
   if (state.grade === '2') {
-    // 2級: essay only
     emailBtn.classList.add('disabled');
-    emailBtn.classList.remove('selected');
-    if (state.mode === 'email') {
-      state.mode = null;
-    }
+    emailBtn.title = '2級はEメール返信がありません';
+    // 自動で意見文を選択
+    essayBtn.classList.add('selected');
+    state.mode = 'essay';
   } else if (state.grade === '3') {
-    // 3級: email only
     essayBtn.classList.add('disabled');
-    essayBtn.classList.remove('selected');
-    if (state.mode === 'essay') {
-      state.mode = null;
-    }
+    essayBtn.title = '3級は意見文がありません';
+    // 自動でEメール返信を選択
+    emailBtn.classList.add('selected');
+    state.mode = 'email';
+  } else if (state.grade === 'pre2') {
+    // 準2級: 両方使える。Eメール返信をデフォルト選択
+    emailBtn.classList.add('selected');
+    state.mode = 'email';
   }
-  // 準2級: both available
 }
 
 function updateStartBtn() {
