@@ -225,11 +225,98 @@ body {
 .practice-body {
   flex: 1;
   padding: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── 左右分割レイアウト ── */
+.practice-split {
+  flex: 1;
+  display: flex;
+  gap: 16px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.practice-left {
+  flex: 1;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding-bottom: 100px;
+  gap: 12px;
+  padding-bottom: 16px;
+  min-width: 0;
+}
+
+.practice-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.practice-right .writing-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.practice-right .writing-textarea {
+  flex: 1;
+  min-height: 120px;
+}
+
+/* モバイル: 縦積み、問題文は折りたたみ可能 */
+@media (max-width: 768px) {
+  .practice-split {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  .practice-left {
+    overflow: visible;
+    flex: none;
+  }
+  .practice-right {
+    flex: none;
+    padding-bottom: 100px;
+  }
+  .practice-right .writing-textarea {
+    min-height: 180px;
+  }
+  .prompt-toggle {
+    display: flex;
+  }
+  .prompt-card.collapsed .email-body,
+  .prompt-card.collapsed .essay-topic,
+  .prompt-card.collapsed .essay-topic-label,
+  .prompt-card.collapsed [style*="tips"] {
+    display: none;
+  }
+  .prompt-card.collapsed {
+    padding: 12px 16px;
+  }
+}
+
+.prompt-toggle {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--primary);
+  padding-top: 8px;
+}
+
+.prompt-toggle .toggle-icon {
+  transition: transform 0.2s;
+}
+
+.prompt-card.collapsed .prompt-toggle .toggle-icon {
+  transform: rotate(-90deg);
 }
 
 /* Email/Topic Card */
@@ -812,19 +899,23 @@ body {
     <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressBar" style="width:0%"></div></div>
   </div>
   <div class="practice-body" id="practiceBody">
-    <!-- Prompt card inserted by JS -->
-    <div id="promptArea"></div>
-
-    <!-- Structure guide -->
-    <div class="structure-card fade-in" id="structureCard"></div>
-
-    <!-- Writing area -->
-    <div class="writing-area fade-in">
-      <div class="writing-label">&#x1F4DD; あなたの解答</div>
-      <textarea class="writing-textarea" id="writingInput" placeholder="ここに英語で書こう..."></textarea>
-      <div class="word-counter">
-        <span><span class="word-count" id="wordCount">0</span> words</span>
-        <span class="word-target" id="wordTarget">目標: 25-35語</span>
+    <div class="practice-split">
+      <div class="practice-left">
+        <!-- Prompt card inserted by JS -->
+        <div id="promptArea"></div>
+        <!-- Structure guide -->
+        <div class="structure-card fade-in" id="structureCard"></div>
+      </div>
+      <div class="practice-right">
+        <!-- Writing area -->
+        <div class="writing-area fade-in">
+          <div class="writing-label">&#x1F4DD; あなたの解答</div>
+          <textarea class="writing-textarea" id="writingInput" placeholder="ここに英語で書こう..."></textarea>
+          <div class="word-counter">
+            <span><span class="word-count" id="wordCount">0</span> words</span>
+            <span class="word-target" id="wordTarget">目標: 25-35語</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1647,7 +1738,7 @@ function startPractice() {
 function renderEmailPrompt(q) {
   const bodyHtml = q.body.replace(/<q>/g, '<span class="question-highlight">').replace(/<\/q>/g, '</span>');
   return `
-    <div class="prompt-card email-mode fade-in">
+    <div class="prompt-card email-mode fade-in" id="promptCard">
       <div class="email-header">
         <div class="email-avatar">${q.from[0]}</div>
         <div class="email-meta">
@@ -1656,16 +1747,24 @@ function renderEmailPrompt(q) {
         </div>
       </div>
       <div class="email-body">${bodyHtml}</div>
+      <div class="prompt-toggle" onclick="document.getElementById('promptCard').classList.toggle('collapsed')">
+        <span>問題文を表示/非表示</span>
+        <span class="toggle-icon">▼</span>
+      </div>
     </div>
   `;
 }
 
 function renderEssayPrompt(q) {
   return `
-    <div class="prompt-card essay-mode fade-in">
+    <div class="prompt-card essay-mode fade-in" id="promptCard">
       <div class="essay-topic-label">TOPIC</div>
-      <div class="essay-topic-text">${q.topic}</div>
+      <div class="essay-topic">${q.topic}</div>
       <div style="margin-top:10px;font-size:0.8rem;color:var(--text-light)">&#x1F4A1; ${q.tips}</div>
+      <div class="prompt-toggle" onclick="document.getElementById('promptCard').classList.toggle('collapsed')">
+        <span>問題文を表示/非表示</span>
+        <span class="toggle-icon">▼</span>
+      </div>
     </div>
   `;
 }
