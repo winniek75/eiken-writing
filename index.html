@@ -339,10 +339,123 @@ body {
   .practice-body {
     flex-direction: column;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
   .pane-left { flex: none; overflow: visible; }
-  .pane-right { flex: none; padding-bottom: 20px; }
+  .pane-right { flex: none; padding-bottom: 80px; }
   .pane-right .writing-textarea { min-height: 160px; }
+}
+
+/* ── スマートフォン最適化 ── */
+@media (max-width: 428px) {
+  body { font-size: 14px; }
+
+  /* ホーム画面 */
+  .home-screen { padding: 16px; gap: 14px; }
+  .home-logo { font-size: 2.4rem; }
+  .home-title { font-size: 1.5rem; }
+  .home-subtitle { font-size: 0.88rem; }
+  .home-card { padding: 20px 16px; }
+  .selector-label { font-size: 0.85rem; }
+  .sel-btn {
+    min-width: 70px;
+    min-height: 44px;
+    padding: 10px 6px;
+    font-size: 0.9rem;
+  }
+  .start-btn {
+    min-height: 48px;
+    font-size: 1.1rem;
+    padding: 14px;
+  }
+  .stats-row { gap: 8px; }
+  .stat-card { padding: 10px 8px; }
+  .stat-num { font-size: 1.3rem; }
+  .stat-label { font-size: 0.7rem; }
+
+  /* 練習画面ヘッダー */
+  .practice-header { padding: 8px 10px 4px; }
+  .practice-title { font-size: 0.88rem; }
+  .timer-badge { font-size: 0.8rem; padding: 3px 10px; }
+  .back-btn { width: 34px; height: 34px; font-size: 1.1rem; min-height: 44px; min-width: 44px; }
+
+  /* 練習画面ボディ */
+  .practice-body { padding: 8px; gap: 8px; }
+
+  /* 問題カード */
+  .prompt-card { padding: 14px 12px; font-size: 0.85rem; }
+  .email-avatar { width: 34px; height: 34px; font-size: 1rem; }
+  .email-from { font-size: 0.88rem; }
+  .email-subject { font-size: 0.75rem; }
+  .email-body { font-size: 0.88rem; line-height: 1.7; }
+  .essay-topic-text { font-size: 1rem; }
+  .essay-topic-label { font-size: 0.75rem; }
+
+  /* 書き方ガイド */
+  .structure-card { padding: 5px 8px !important; gap: 4px; }
+  .structure-card .structure-title { font-size: 0.7rem; }
+  .structure-card li { padding: 2px 8px; font-size: 0.7rem; }
+
+  /* 入力エリア */
+  .writing-area { padding: 12px; }
+  .writing-label { font-size: 0.82rem; }
+  .writing-textarea {
+    font-size: 16px; /* iOS zoom防止 */
+    min-height: 150px;
+    padding: 12px;
+    line-height: 1.7;
+  }
+  .word-counter { font-size: 0.8rem; }
+  .word-count { font-size: 1rem; }
+
+  /* 提出ボタン */
+  .submit-area { padding: 12px; }
+  .submit-btn {
+    min-height: 48px;
+    font-size: 1.1rem;
+    padding: 14px;
+  }
+
+  /* レビュー画面 */
+  .review-header { padding: 18px 16px; }
+  .review-stars { font-size: 2rem; }
+  .review-msg { font-size: 1.1rem; }
+  .review-body {
+    padding: 12px;
+    padding-bottom: 90px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .review-card { padding: 14px; }
+  .review-card-title { font-size: 0.8rem; }
+  .review-answer { font-size: 0.88rem; line-height: 1.7; }
+  .model-answer-box { padding: 12px; font-size: 0.88rem; line-height: 1.7; }
+
+  /* スコアサークル */
+  .score-circle { width: 100px; height: 100px; }
+  .score-circle svg { width: 100px; height: 100px; }
+  .score-number { font-size: 1.6rem; }
+  .score-label { font-size: 0.8rem; }
+
+  /* フィードバック */
+  .feedback-item { padding: 8px 10px; font-size: 0.82rem; }
+  .feedback-fix { font-size: 0.75rem; }
+
+  /* セルフチェック */
+  .self-check-item { padding: 8px 0; font-size: 0.85rem; min-height: 44px; }
+  .check-box { width: 26px; height: 26px; }
+
+  /* ナビボタン */
+  .next-area { padding: 12px; gap: 8px; }
+  .next-btn {
+    min-height: 48px;
+    font-size: 1rem;
+    padding: 14px;
+  }
+  .home-return-btn {
+    min-height: 48px;
+    font-size: 1rem;
+    padding: 14px 16px;
+  }
 }
 
 /* Email/Topic Card */
