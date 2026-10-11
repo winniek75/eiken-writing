@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>英検ライティング道場</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #6C63FF;
+  --primary-dark: #5A52D5;
+  --secondary: #FF6584;
+  --accent: #43E97B;
+  --accent2: #38F9D7;
+  --bg: #F0F0FF;
+  --card: #FFFFFF;
+  --text: #2D2B55;
+  --text-light: #7B7B9D;
+  --shadow: 0 8px 32px rgba(108,99,255,0.15);
+  --shadow-sm: 0 4px 12px rgba(108,99,255,0.1);
+  --radius: 20px;
+  --radius-sm: 12px;
+  --gold: #FFD700;
+  --star-empty: #E0E0E0;
+  --grade3: #43E97B;
+  --grade-pre2: #6C63FF;
+  --grade2: #FF6584;
+  --email-bg: #FFF8E1;
+  --essay-bg: #E8F5E9;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans JP', 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+.screen { display: none; min-height: 100vh; min-height: 100dvh; }
+.screen.active { display: flex; flex-direction: column; }
+
+/* ===== HOME SCREEN ===== */
+.home-screen {
+  background: linear-gradient(135deg, #6C63FF 0%, #a18cd1 50%, #fbc2eb 100%);
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  gap: 20px;
+}
+
+.home-logo {
+  font-size: 3rem;
+  text-align: center;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.home-title {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #fff;
+  text-align: center;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+  line-height: 1.3;
+}
+
+.home-subtitle {
+  color: rgba(255,255,255,0.9);
+  font-size: 1rem;
+  text-align: center;
+}
+
+.home-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: var(--shadow);
+}
+
+.selector-group {
+  margin-bottom: 20px;
+}
+
+.selector-label {
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  color: var(--text-light);
+}
+
+.selector-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sel-btn {
+  flex: 1;
+  min-width: 80px;
+  padding: 12px 8px;
+  border: 2px solid #E0E0F0;
+  border-radius: var(--radius-sm);
+  background: #FAFAFF;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.sel-btn:hover { border-color: var(--primary); background: #F0F0FF; }
+.sel-btn.selected {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.sel-btn.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.start-btn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: #fff;
+  font-family: inherit;
+  font-size: 1.2rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(108,99,255,0.3);
+}
+
+.start-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(108,99,255,0.4); }
+.start-btn:active { transform: translateY(0); }
+
+.stats-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.stat-card {
+  flex: 1;
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-sm);
+  padding: 14px 12px;
+  text-align: center;
+  color: #fff;
+}
+
+.stat-num { font-size: 1.6rem; font-weight: 900; font-family: 'Nunito', sans-serif; }
+.stat-label { font-size: 0.75rem; opacity: 0.9; }
+
+/* ===== PRACTICE SCREEN ===== */
+.practice-screen {
+  background: var(--bg);
+}
+
+.practice-header {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.back-btn {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.practice-title { font-weight: 700; font-size: 1rem; flex: 1; }
+
+.timer-badge {
+  background: rgba(255,255,255,0.2);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 0.85rem;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.practice-body {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 100px;
+}
+
+/* Email/Topic Card */
+.prompt-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.prompt-card.email-mode {
+  border-left: 5px solid #FFC107;
+}
+
+.prompt-card.essay-mode {
+  border-left: 5px solid var(--accent);
+}
+
+.email-header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #F0F0F0;
+}
+
+.email-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FFC107, #FF9800);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #fff;
+  font-weight: 700;
+}
+
+.email-meta { flex: 1; }
+.email-from { font-weight: 700; font-size: 0.95rem; }
+.email-subject { font-size: 0.8rem; color: var(--text-light); }
+
+.email-body {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  white-space: pre-line;
+}
+
+.email-body .question-highlight {
+  background: linear-gradient(transparent 60%, #FFE082 60%);
+  font-weight: 700;
+}
+
+.essay-topic-label {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.essay-topic-text {
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.6;
+  font-family: 'Nunito', 'Noto Sans JP', sans-serif;
+}
+
+/* Structure Guide */
+.structure-card {
+  background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+.structure-title {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #2E7D32;
+  margin-bottom: 8px;
+}
+
+.structure-steps {
+  list-style: none;
+  font-size: 0.85rem;
+  line-height: 1.8;
+}
+
+.structure-steps li {
+  padding-left: 24px;
+  position: relative;
+}
+
+.structure-steps li::before {
+  content: attr(data-num);
+  position: absolute;
+  left: 0;
+  width: 18px;
+  height: 18px;
+  background: #43A047;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 4px;
+  font-weight: 700;
+}
+
+/* Writing Area */
+.writing-area {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.writing-label {
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.writing-textarea {
+  width: 100%;
+  min-height: 180px;
+  border: 2px solid #E0E0F0;
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  font-family: 'Nunito', 'Noto Sans JP', sans-serif;
+  font-size: 1rem;
+  line-height: 1.8;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.writing-textarea:focus {
+  border-color: var(--primary);
+}
+
+.word-counter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  font-size: 0.85rem;
+}
+
+.word-count {
+  font-weight: 700;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.1rem;
+}
+
+.word-count.under { color: var(--secondary); }
+.word-count.good { color: var(--accent); }
+.word-count.over { color: #FF9800; }
+
+.word-target {
+  color: var(--text-light);
+  font-size: 0.8rem;
+}
+
+/* Submit Button */
+.submit-area {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  background: linear-gradient(transparent, var(--bg) 20%);
+  z-index: 10;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: var(--text);
+  font-family: inherit;
+  font-size: 1.2rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(67,233,123,0.3);
+}
+
+.submit-btn:hover { transform: translateY(-2px); }
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* ===== REVIEW SCREEN ===== */
+.review-screen {
+  background: var(--bg);
+}
+
+.review-header {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  padding: 24px 20px;
+  text-align: center;
+  color: var(--text);
+}
+
+.review-stars {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+  animation: popIn 0.5s ease;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.review-msg {
+  font-weight: 900;
+  font-size: 1.3rem;
+}
+
+.review-body {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 100px;
+}
+
+.review-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.review-card-title {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.review-answer {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.model-answer-box {
+  background: #F0FFF4;
+  border: 2px solid #C8E6C9;
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+/* Self Check */
+.self-check-list {
+  list-style: none;
+}
+
+.self-check-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid #F0F0F0;
+  font-size: 0.9rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.self-check-item:last-child { border-bottom: none; }
+
+.check-box {
+  width: 28px;
+  height: 28px;
+  border: 2px solid #E0E0F0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.self-check-item.checked .check-box {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* Next Button */
+.next-area {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  background: linear-gradient(transparent, var(--bg) 20%);
+  z-index: 10;
+  display: flex;
+  gap: 10px;
+}
+
+.next-btn {
+  flex: 1;
+  padding: 16px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: #fff;
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(108,99,255,0.3);
+}
+
+.home-return-btn {
+  padding: 16px 20px;
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: var(--primary);
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .practice-body, .review-body {
+    max-width: 640px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .submit-area, .next-area {
+    max-width: 640px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.slide-up {
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: var(--text);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  z-index: 100;
+  transition: transform 0.3s ease;
+  white-space: nowrap;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Progress bar */
+.progress-bar-bg {
+  height: 4px;
+  background: rgba(255,255,255,0.2);
+  width: 100%;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: rgba(255,255,255,0.8);
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+</style>
+</head>
+<body>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== HOME SCREEN ===== -->
+<div class="screen home-screen active" id="homeScreen">
+  <div class="home-logo">&#x270D;&#xFE0F;</div>
+  <h1 class="home-title">えいけん<br>ライティング道場</h1>
+  <p class="home-subtitle">Eメールがえしん & いけんぶん れんしゅう</p>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num" id="statTotal">0</div>
+      <div class="stat-label">れんしゅう</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="statStars">0</div>
+      <div class="stat-label">ほし</div>
+    </div>
+  </div>
+
+  <div class="home-card">
+    <div class="selector-group">
+      <div class="selector-label">きゅう をえらぼう</div>
+      <div class="selector-buttons" id="gradeSelector">
+        <button class="sel-btn" data-grade="3">3きゅう</button>
+        <button class="sel-btn" data-grade="pre2">じゅん2きゅう</button>
+        <button class="sel-btn" data-grade="2">2きゅう</button>
+      </div>
+    </div>
+
+    <div class="selector-group">
+      <div class="selector-label">モード をえらぼう</div>
+      <div class="selector-buttons" id="modeSelector">
+        <button class="sel-btn" data-mode="email">Eメール<br>がえしん</button>
+        <button class="sel-btn" data-mode="essay">いけんぶん</button>
+      </div>
+    </div>
+
+    <button class="start-btn" id="startBtn" disabled>はじめる!</button>
+  </div>
+</div>
+
+<!-- ===== PRACTICE SCREEN ===== -->
+<div class="screen practice-screen" id="practiceScreen">
+  <div class="practice-header">
+    <button class="back-btn" id="backBtn">&#x2190;</button>
+    <span class="practice-title" id="practiceTitle">3きゅう Eメールがえしん</span>
+    <span class="timer-badge" id="timerBadge" title="タイマー ON/OFF">00:00</span>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressBar" style="width:0%"></div></div>
+  </div>
+  <div class="practice-body" id="practiceBody">
+    <!-- Prompt card inserted by JS -->
+    <div id="promptArea"></div>
+
+    <!-- Structure guide -->
+    <div class="structure-card fade-in" id="structureCard"></div>
+
+    <!-- Writing area -->
+    <div class="writing-area fade-in">
+      <div class="writing-label">&#x1F4DD; あなたのこたえ</div>
+      <textarea class="writing-textarea" id="writingInput" placeholder="ここに えいごで かこう..."></textarea>
+      <div class="word-counter">
+        <span><span class="word-count" id="wordCount">0</span> words</span>
+        <span class="word-target" id="wordTarget">もくひょう: 25-35語</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="submit-area">
+    <button class="submit-btn" id="submitBtn" disabled>できた!</button>
+  </div>
+</div>
+
+<!-- ===== REVIEW SCREEN ===== -->
+<div class="screen review-screen" id="reviewScreen">
+  <div class="review-header">
+    <div class="review-stars" id="reviewStars"></div>
+    <div class="review-msg" id="reviewMsg">がんばったね!</div>
+  </div>
+  <div class="review-body">
+    <!-- Your answer -->
+    <div class="review-card fade-in">
+      <div class="review-card-title">&#x1F4AC; あなたのこたえ</div>
+      <div class="review-answer" id="yourAnswer"></div>
+      <div class="word-counter" style="margin-top:8px">
+        <span><span class="word-count" id="reviewWordCount">0</span> words</span>
+      </div>
+    </div>
+
+    <!-- Model answer -->
+    <div class="review-card fade-in">
+      <div class="review-card-title">&#x1F4D6; もはんかいとう</div>
+      <div class="model-answer-box" id="modelAnswer"></div>
+    </div>
+
+    <!-- Self check -->
+    <div class="review-card fade-in">
+      <div class="review-card-title">&#x2705; セルフチェック</div>
+      <ul class="self-check-list" id="selfCheckList"></ul>
+    </div>
+  </div>
+
+  <div class="next-area">
+    <button class="home-return-btn" id="homeReturnBtn">&#x1F3E0;</button>
+    <button class="next-btn" id="nextBtn">つぎのもんだい &#x2192;</button>
+  </div>
+</div>
+
+<script>
+// ===== QUESTION DATA =====
+
+const QUESTIONS = {
+  // ===== 3級 Eメール返信 (15問) =====
+  "3_email": [
+    {
+      from: "Alex",
+      subject: "Weekend Plans",
+      body: `Hi! How are you? I'm so excited about this weekend. I want to do something fun.\n\n<q>What are you going to do this weekend?</q> Also, <q>what is your favorite food?</q> I want to try Japanese food!\n\nYour friend,\nAlex`,
+      modelReply: `Hi Alex,\n\nThank you for your email. I'm going to go shopping with my friends this weekend. We will go to a big mall near my house. My favorite food is sushi. I eat sushi every week. You should try it!\n\nYour friend`,
+      tips: "しゅうまつのよていと、すきなたべものの2つにこたえよう"
+    },
+    {
+      from: "Emma",
+      subject: "Your Hobby",
+      body: `Hi! I'm writing a report about hobbies for my class.\n\n<q>What is your hobby?</q> And <q>how often do you do it?</q> I really want to know!\n\nThanks,\nEmma`,
+      modelReply: `Hi Emma,\n\nThank you for your email. My hobby is playing the piano. I practice the piano every day after school. I started playing when I was six years old. It is very fun!\n\nYour friend`,
+      tips: "しゅみと、どのくらいやるかの2つにこたえよう"
+    },
+    {
+      from: "Tom",
+      subject: "Visiting Japan",
+      body: `Hi! I'm going to visit Japan next year. I'm so excited!\n\n<q>What place should I visit in Japan?</q> And <q>what is the best season to visit?</q>\n\nThanks,\nTom`,
+      modelReply: `Hi Tom,\n\nThank you for your email. You should visit Kyoto. There are many beautiful temples there. The best season to visit is spring. You can see beautiful cherry blossoms in April.\n\nYour friend`,
+      tips: "おすすめのばしょと、いちばんいいきせつの2つにこたえよう"
+    },
+    {
+      from: "Sarah",
+      subject: "My Birthday Party",
+      body: `Hi! I'm having a birthday party next Saturday. You are invited!\n\n<q>What gift do you want for your birthday?</q> And <q>what time should I come to the party?</q>\n\nSee you soon!\nSarah`,
+      modelReply: `Hi Sarah,\n\nThank you for your email. Happy birthday! I think a nice book is a good gift. I like reading very much. Please come to the party at three o'clock. We will have cake and play games.\n\nYour friend`,
+      tips: "ほしいプレゼントと、なんじにくるかの2つにこたえよう"
+    },
+    {
+      from: "Mike",
+      subject: "New Pet",
+      body: `Hi! Guess what? My parents said I can get a pet! I'm so happy!\n\n<q>What kind of pet should I get?</q> And <q>what name do you like for a pet?</q>\n\nPlease help me decide!\nMike`,
+      modelReply: `Hi Mike,\n\nThank you for your email. That's great news! I think you should get a dog. Dogs are very friendly and fun. How about the name "Lucky"? I think it is a cute name for a pet.\n\nYour friend`,
+      tips: "どんなペットがいいかと、なまえの2つにこたえよう"
+    },
+    {
+      from: "Lisa",
+      subject: "Summer Vacation",
+      body: `Hi! Summer vacation is coming soon. I can't wait!\n\n<q>Where do you want to go during summer vacation?</q> And <q>who will you go with?</q>\n\nTell me about your plans!\nLisa`,
+      modelReply: `Hi Lisa,\n\nThank you for your email. I want to go to the beach during summer vacation. I love swimming in the sea. I will go with my family. We go to the beach every summer.\n\nYour friend`,
+      tips: "どこにいきたいかと、だれといくかの2つにこたえよう"
+    },
+    {
+      from: "Kevin",
+      subject: "School Festival",
+      body: `Hi! Our school festival is next month. Our class needs to decide what to do.\n\n<q>What should our class do at the school festival?</q> And <q>when is your school festival?</q>\n\nLet me know!\nKevin`,
+      modelReply: `Hi Kevin,\n\nThank you for your email. I think your class should do a maid cafe. It is very popular and fun. My school festival is in October. We will have a dance show this year.\n\nYour friend`,
+      tips: "なにをするかと、がっこうさいはいつかの2つにこたえよう"
+    },
+    {
+      from: "Amy",
+      subject: "Movie Night",
+      body: `Hi! Let's watch a movie together this Friday night!\n\n<q>What kind of movies do you like?</q> And <q>can you tell me a good movie?</q>\n\nI can't wait!\nAmy`,
+      modelReply: `Hi Amy,\n\nThank you for your email. I like action movies. They are very exciting. I think you should watch "Spider-Man." It is a really fun movie. Let's watch it together on Friday!\n\nYour friend`,
+      tips: "すきなえいがのジャンルと、おすすめのえいがの2つにこたえよう"
+    },
+    {
+      from: "David",
+      subject: "Sports Day",
+      body: `Hi! Sports day is coming next week. I'm a little nervous.\n\n<q>What event will you join on sports day?</q> And <q>how do you practice for it?</q>\n\nGood luck!\nDavid`,
+      modelReply: `Hi David,\n\nThank you for your email. I will join the relay race on sports day. I practice running every morning before school. I run around the park near my house. Let's both do our best!\n\nYour friend`,
+      tips: "どのきょうぎにでるかと、どうやってれんしゅうするかの2つにこたえよう"
+    },
+    {
+      from: "Sophie",
+      subject: "Family Trip",
+      body: `Hi! My family is planning a trip. I need some ideas.\n\n<q>Where is a good place for a family trip?</q> And <q>how many days should we travel?</q>\n\nThanks for your help!\nSophie`,
+      modelReply: `Hi Sophie,\n\nThank you for your email. I think Okinawa is a great place for a family trip. You can swim and see beautiful fish. I think three days is good. You can enjoy the beach and visit many places.\n\nYour friend`,
+      tips: "いいばしょと、なんにちがいいかの2つにこたえよう"
+    },
+    {
+      from: "Jack",
+      subject: "After School",
+      body: `Hi! I have free time after school every day now. I want to do something.\n\n<q>What do you usually do after school?</q> And <q>what club should I join?</q>\n\nPlease give me advice!\nJack`,
+      modelReply: `Hi Jack,\n\nThank you for your email. I usually do my homework and play video games after school. I think you should join the basketball club. It is very fun and you can make many friends.\n\nYour friend`,
+      tips: "ほうかごになにをするかと、どのクラブがいいかの2つにこたえよう"
+    },
+    {
+      from: "Mia",
+      subject: "English Study",
+      body: `Hi! I want to get better at English. Can you help me?\n\n<q>How do you study English?</q> And <q>what is the best way to learn new words?</q>\n\nI need your advice!\nMia`,
+      modelReply: `Hi Mia,\n\nThank you for your email. I study English by listening to English songs. I also watch English movies. The best way to learn new words is to use a notebook. Write new words every day and read them before bed.\n\nYour friend`,
+      tips: "えいごのべんきょうほうほうと、たんごのおぼえかたの2つにこたえよう"
+    },
+    {
+      from: "Ryan",
+      subject: "Cooking",
+      body: `Hi! I started cooking last week. It's really fun!\n\n<q>Can you cook? What can you make?</q> And <q>what dish do you want to learn to cook?</q>\n\nTell me!\nRyan`,
+      modelReply: `Hi Ryan,\n\nThank you for your email. Yes, I can cook. I can make curry and rice. It is easy and delicious. I want to learn to cook pasta. My mother makes great pasta, so I will ask her to teach me.\n\nYour friend`,
+      tips: "なにがつくれるかと、つくりたいりょうりの2つにこたえよう"
+    },
+    {
+      from: "Olivia",
+      subject: "Music",
+      body: `Hi! I love music. I listen to music every day.\n\n<q>What kind of music do you like?</q> And <q>can you play any instruments?</q>\n\nI want to know about you!\nOlivia`,
+      modelReply: `Hi Olivia,\n\nThank you for your email. I like pop music. My favorite singer is very popular in Japan. I can play the guitar. I started learning it last year. I practice every weekend.\n\nYour friend`,
+      tips: "すきなおんがくのしゅるいと、がっきができるかの2つにこたえよう"
+    },
+    {
+      from: "Lucas",
+      subject: "Winter Plans",
+      body: `Hi! Winter vacation is coming soon. I love winter!\n\n<q>What do you like to do in winter?</q> And <q>what is your favorite winter food?</q>\n\nStay warm!\nLucas`,
+      modelReply: `Hi Lucas,\n\nThank you for your email. I like to go skiing in winter. I go to the mountains with my family every year. My favorite winter food is hot pot. It is warm and delicious on cold days.\n\nYour friend`,
+      tips: "ふゆにすきなことと、ふゆのすきなたべものの2つにこたえよう"
+    }
+  ],
+
+  // ===== 準2級 Eメール返信 (10問) =====
+  "pre2_email": [
+    {
+      from: "Chris",
+      subject: "School Life in Japan",
+      body: `Hi! I'm doing a project about schools in different countries.\n\nI'd like to know, <q>what is a typical school day like in Japan?</q> Also, <q>what is the most interesting subject you study and why?</q>\n\nI appreciate your help!\nChris`,
+      modelReply: `Hi Chris,\n\nThank you for your email. A typical school day in Japan starts at 8:30 in the morning. We study six subjects and have a lunch break. After school, many students join club activities. The most interesting subject I study is science because we do many experiments. Last week, we made a small robot in class. It was really exciting.\n\nYour friend`,
+      tips: "にほんのがっこうのいちにちと、いちばんおもしろいかもくとそのりゆうをかこう"
+    },
+    {
+      from: "Rachel",
+      subject: "Environmental Issues",
+      body: `Hi! Our school is starting an eco-project. I want to learn what students in Japan are doing.\n\n<q>What do you do to help the environment?</q> And <q>what environmental problem concerns you the most?</q>\n\nLet me know your thoughts!\nRachel`,
+      modelReply: `Hi Rachel,\n\nThank you for your email. To help the environment, I always bring my own water bottle and shopping bag. I also separate garbage for recycling at home. The environmental problem that concerns me the most is plastic pollution in the ocean. I saw a documentary about sea animals eating plastic, and it made me very sad.\n\nYour friend`,
+      tips: "かんきょうのためにしていることと、いちばんしんぱいなかんきょうもんだいをかこう"
+    },
+    {
+      from: "Daniel",
+      subject: "Part-time Jobs",
+      body: `Hi! Some of my classmates have started working part-time.\n\n<q>Do you think high school students should have part-time jobs?</q> Also, <q>what kind of job would you like to try and why?</q>\n\nI'd love to hear your opinion!\nDaniel`,
+      modelReply: `Hi Daniel,\n\nThank you for your email. I think high school students can have part-time jobs if they can manage their time well. It is a good way to learn about society and earn money. I would like to try working at a bookstore because I love reading. I think I could learn about many different books and recommend them to customers.\n\nYour friend`,
+      tips: "アルバイトについてのいけんと、やってみたいしごととそのりゆうをかこう"
+    },
+    {
+      from: "Kate",
+      subject: "Technology in Daily Life",
+      body: `Hi! I'm writing a blog post about how technology has changed our lives.\n\n<q>How has technology changed your daily life?</q> And <q>is there any technology you think we use too much?</q>\n\nThanks for sharing!\nKate`,
+      modelReply: `Hi Kate,\n\nThank you for your email. Technology has changed my daily life a lot. I use my smartphone to study English with apps, and I can video call my friends who live far away. However, I think we use social media too much. Many people spend hours looking at their phones instead of talking to the people around them. I try to limit my screen time.\n\nYour friend`,
+      tips: "テクノロジーでかわったことと、つかいすぎだとおもうテクノロジーをかこう"
+    },
+    {
+      from: "James",
+      subject: "Healthy Living",
+      body: `Hi! I've been trying to live a healthier lifestyle recently.\n\n<q>What do you do to stay healthy?</q> And <q>what healthy habit do you think is the most important for students?</q>\n\nI need some motivation!\nJames`,
+      modelReply: `Hi James,\n\nThank you for your email. To stay healthy, I exercise three times a week. I usually go jogging in the park or play tennis with my friends. I also try to eat vegetables every day. I think the most important healthy habit for students is getting enough sleep. Many students stay up late studying, but sleep is important for our brains and bodies.\n\nYour friend`,
+      tips: "けんこうのためにしていることと、がくせいにいちばんたいせつなしゅうかんをかこう"
+    },
+    {
+      from: "Emily",
+      subject: "Cultural Festival Ideas",
+      body: `Hi! Our school's cultural festival is in two months. I'm the leader of our class committee.\n\n<q>What did your class do at your last cultural festival?</q> And <q>what do you think makes a cultural festival event successful?</q>\n\nI need ideas!\nEmily`,
+      modelReply: `Hi Emily,\n\nThank you for your email. At our last cultural festival, our class opened a haunted house. We made scary decorations and wore costumes. It was very popular! I think a successful cultural festival event needs teamwork. Everyone in the class should have a job. Also, it's important to choose something that both the performers and visitors can enjoy.\n\nYour friend`,
+      tips: "まえのぶんかさいでなにをしたかと、せいこうのひけつをかこう"
+    },
+    {
+      from: "Ben",
+      subject: "Reading Habits",
+      body: `Hi! My teacher says we should read more books, but I find it hard to start.\n\n<q>How often do you read, and what kind of books do you enjoy?</q> Also, <q>how can someone who doesn't like reading get interested in books?</q>\n\nHelp me out!\nBen`,
+      modelReply: `Hi Ben,\n\nThank you for your email. I read about two books every month. I enjoy mystery novels because they are exciting and I can't stop reading them. If someone doesn't like reading, I think they should start with manga or short stories. Also, watching a movie based on a book can make you want to read the original story. You can also join a book club at school.\n\nYour friend`,
+      tips: "どのくらいよむかと、どくしょがすきになるほうほうをかこう"
+    },
+    {
+      from: "Hannah",
+      subject: "Future Career",
+      body: `Hi! We had a career counseling session at school today, and now I'm thinking about my future.\n\n<q>What job do you want to have in the future and why?</q> Also, <q>what are you doing now to prepare for your future career?</q>\n\nI'm curious about your plans!\nHannah`,
+      modelReply: `Hi Hannah,\n\nThank you for your email. I want to be a teacher in the future because I love helping people learn new things. I think it is a very meaningful job. To prepare for my future career, I am studying hard, especially English and math. I also volunteer at a children's learning center on Saturdays to get experience working with kids.\n\nYour friend`,
+      tips: "しょうらいのしごととそのりゆう、いまじゅんびしていることをかこう"
+    },
+    {
+      from: "Sam",
+      subject: "Travel Experience",
+      body: `Hi! I love traveling and learning about new cultures.\n\n<q>What is the most memorable trip you have ever taken?</q> And <q>if you could travel anywhere in the world, where would you go and why?</q>\n\nTell me all about it!\nSam`,
+      modelReply: `Hi Sam,\n\nThank you for your email. The most memorable trip I have ever taken was to Hokkaido with my family. We went skiing and ate delicious seafood. The snow was beautiful and I will never forget it. If I could travel anywhere, I would go to Australia because I want to see kangaroos and koalas in the wild. I also want to try surfing at Bondi Beach.\n\nYour friend`,
+      tips: "いちばんおもいでのりょこうと、いきたいばしょとそのりゆうをかこう"
+    },
+    {
+      from: "Lily",
+      subject: "Online Learning",
+      body: `Hi! Since the pandemic, many schools have started using online learning.\n\n<q>What do you think are the advantages of online learning?</q> And <q>do you prefer studying at school or at home? Why?</q>\n\nI'm interested in your opinion!\nLily`,
+      modelReply: `Hi Lily,\n\nThank you for your email. I think the advantages of online learning are that students can study at their own pace and watch lessons again if they don't understand. It also saves time because we don't need to travel to school. However, I prefer studying at school because I can ask teachers questions directly and study with my friends. It is easier to concentrate at school.\n\nYour friend`,
+      tips: "オンラインがくしゅうのりてんと、がっこうといえのどちらがすきかをかこう"
+    }
+  ],
+
+  // ===== 準2級 意見文 (10問) =====
+  "pre2_essay": [
+    {
+      topic: "Do you think students should use smartphones at school?",
+      modelAnswer: `I think students should not use smartphones at school. I have two reasons. First, smartphones can be distracting. If students use their phones during class, they will not be able to focus on the lesson. Second, students should talk to their friends face to face during breaks. Using phones makes communication less personal.`,
+      tips: "さんせいかはんたいか、りゆうを2つかこう"
+    },
+    {
+      topic: "Do you think reading books is important for young people?",
+      modelAnswer: `I think reading books is very important for young people. I have two reasons. First, reading books helps us learn new words and ideas. We can improve our vocabulary and writing skills. Second, books teach us about different cultures and ways of thinking. By reading, we can understand the world better.`,
+      tips: "だいじだとおもうかどうか、りゆうを2つかこう"
+    },
+    {
+      topic: "Do you think people should eat breakfast every day?",
+      modelAnswer: `I think people should eat breakfast every day. I have two reasons. First, breakfast gives us energy for the morning. Without it, we feel tired and cannot concentrate at school or work. Second, eating breakfast is good for our health. It helps our body work well and keeps us from eating too much at lunch.`,
+      tips: "まいにちあさごはんをたべるべきかどうか、りゆうを2つかこう"
+    },
+    {
+      topic: "Do you think it is better to live in the city or in the countryside?",
+      modelAnswer: `I think it is better to live in the city. I have two reasons. First, there are more job opportunities in the city. People can find many kinds of work easily. Second, the city has better public transportation. We can go anywhere by train or bus, so we don't need a car.`,
+      tips: "としといなかのどちらがいいか、りゆうを2つかこう"
+    },
+    {
+      topic: "Do you think students should study abroad?",
+      modelAnswer: `I think students should study abroad. I have two reasons. First, studying abroad helps us improve our language skills. We can practice speaking English every day with native speakers. Second, we can learn about different cultures. Living in another country teaches us to be more open-minded and independent.`,
+      tips: "りゅうがくすべきかどうか、りゆうを2つかこう"
+    },
+    {
+      topic: "Do you think school uniforms are necessary?",
+      modelAnswer: `I think school uniforms are necessary. I have two reasons. First, uniforms make all students look equal. No one has to worry about wearing expensive clothes. Second, uniforms help students focus on studying. If there are no uniforms, students might spend too much time thinking about fashion.`,
+      tips: "せいふくはひつようかどうか、りゆうを2つかこう"
+    },
+    {
+      topic: "Do you think children should learn to cook at a young age?",
+      modelAnswer: `I think children should learn to cook at a young age. I have two reasons. First, cooking is an important life skill. If children learn to cook, they can take care of themselves when they grow up. Second, cooking helps children learn about healthy eating. They can understand what foods are good for their body.`,
+      tips: "こどもはりょうりをならうべきかどうか、りゆうを2つかこう"
+    },
+    {
+      topic: "Do you think playing sports is more important than studying?",
+      modelAnswer: `I do not think playing sports is more important than studying. I have two reasons. First, studying gives us knowledge and skills for our future jobs. We need good grades to enter a good university. Second, we can exercise in our free time, but we cannot easily study outside of school. However, I think both studying and sports are important for a balanced life.`,
+      tips: "スポーツとべんきょうのどちらがだいじか、りゆうを2つかこう"
+    },
+    {
+      topic: "Do you think watching movies is a good way to learn English?",
+      modelAnswer: `I think watching movies is a good way to learn English. I have two reasons. First, we can hear natural English spoken by native speakers. This helps us improve our listening skills and pronunciation. Second, movies are fun, so we can enjoy studying. If we enjoy learning, we will continue to study English every day.`,
+      tips: "えいがでえいごがまなべるかどうか、りゆうを2つかこう"
+    },
+    {
+      topic: "Do you think it is important for students to do volunteer work?",
+      modelAnswer: `I think it is important for students to do volunteer work. I have two reasons. First, volunteer work teaches us to think about other people. We can learn to be kind and helpful to those in need. Second, it gives us experience that we cannot get in the classroom. We can learn teamwork and communication skills through volunteering.`,
+      tips: "ボランティアはだいじかどうか、りゆうを2つかこう"
+    }
+  ],
+
+  // ===== 2級 意見文 (10問) =====
+  "2_essay": [
+    {
+      topic: "Some people say that social media has a negative impact on young people. Do you agree with this opinion?",
+      modelAnswer: `I agree that social media has a negative impact on young people. I have two reasons to support this opinion.\n\nFirst, social media can be harmful to mental health. Many young people compare themselves to others online and feel anxious or depressed. Studies have shown that spending too much time on social media leads to lower self-esteem, especially among teenagers who are easily influenced by images of perfect lifestyles.\n\nSecond, social media reduces the quality of face-to-face communication. Young people today prefer texting to talking in person. As a result, they may have difficulty building deep relationships and understanding other people's emotions. This can lead to feelings of loneliness even though they have many online friends.`,
+      tips: "SNSのわるいえいきょうにさんせいかはんたいか、りゆうを2つ、くわしくかこう"
+    },
+    {
+      topic: "It is sometimes said that people should work to live, not live to work. Do you agree with this idea?",
+      modelAnswer: `I agree that people should work to live, not live to work. I have two reasons to support this opinion.\n\nFirst, working too much is bad for our health. People who spend most of their time at work often suffer from stress, lack of sleep, and other health problems. If we focus too much on our careers, we may lose our physical and mental well-being, which is more important than any job.\n\nSecond, spending time with family and friends is essential for happiness. No matter how successful we are at work, life feels empty without meaningful relationships. People should have enough free time to enjoy hobbies, travel, and create memories with the people they love.`,
+      tips: "はたらくことのバランスについて、りゆうを2つ、くわしくかこう"
+    },
+    {
+      topic: "Do you think that artificial intelligence will have a positive effect on society in the future?",
+      modelAnswer: `I think that artificial intelligence will have a positive effect on society in the future. I have two reasons to support this opinion.\n\nFirst, AI can solve problems that are difficult for humans. For example, AI is already being used in medicine to detect diseases earlier and more accurately than human doctors. In the future, AI may help us find cures for serious illnesses like cancer, which would save millions of lives.\n\nSecond, AI can make our daily lives more convenient. Self-driving cars, smart home systems, and AI assistants can save us time on routine tasks. This means people will have more time to focus on creative and meaningful activities instead of repetitive work.`,
+      tips: "AIがしゃかいにいいえいきょうをあたえるかどうか、りゆうを2つ、くわしくかこう"
+    },
+    {
+      topic: "Some people believe that all plastic bags should be banned. Do you agree with this opinion?",
+      modelAnswer: `I agree that all plastic bags should be banned. I have two reasons to support this opinion.\n\nFirst, plastic bags cause serious environmental damage. They take hundreds of years to break down, and many of them end up in the ocean, where they harm marine animals. Sea turtles and fish often mistake plastic bags for food, which can kill them. Banning plastic bags would greatly reduce this pollution.\n\nSecond, there are already good alternatives to plastic bags. People can use reusable cloth bags or paper bags instead. In countries where plastic bags have been banned, people have quickly adapted to using eco-friendly alternatives. This shows that we do not really need plastic bags in our daily lives.`,
+      tips: "ビニールぶくろをきんしすべきかどうか、りゆうを2つ、くわしくかこう"
+    },
+    {
+      topic: "Do you think that the voting age should be lowered to 16?",
+      modelAnswer: `I think that the voting age should be lowered to 16. I have two reasons to support this opinion.\n\nFirst, young people are affected by political decisions, so they should have a say in them. Issues like education policy, climate change, and job opportunities directly impact teenagers' futures. If they can vote, politicians will pay more attention to young people's needs and concerns.\n\nSecond, allowing 16-year-olds to vote would encourage them to become more interested in politics from an early age. If young people learn about political issues and participate in elections while they are still in school, they are more likely to become responsible and active citizens in the future.`,
+      tips: "せんきょけんを16さいにさげるべきかどうか、りゆうを2つ、くわしくかこう"
+    },
+    {
+      topic: "It is often said that studying abroad is the best way to learn a foreign language. Do you agree?",
+      modelAnswer: `I agree that studying abroad is the best way to learn a foreign language. I have two reasons to support this opinion.\n\nFirst, living in a foreign country forces you to use the language every day. When you go shopping, make friends, and attend classes in another language, you naturally improve your speaking and listening skills. This kind of immersion is much more effective than just studying from a textbook.\n\nSecond, studying abroad helps you understand the culture behind the language. Language and culture are closely connected, and by living in another country, you can learn expressions and customs that you would never learn in a classroom. This deeper understanding makes your communication more natural and meaningful.`,
+      tips: "りゅうがくがいちばんいいがいこくごがくしゅうほうほうかどうか、りゆうを2つ、くわしくかこう"
+    },
+    {
+      topic: "Some people think that homework should be abolished in schools. Do you agree with this idea?",
+      modelAnswer: `I do not agree that homework should be abolished in schools. I have two reasons to support this opinion.\n\nFirst, homework helps students review and remember what they learned in class. Without practice at home, students may quickly forget important concepts. By doing homework regularly, they can strengthen their understanding and prepare for exams more effectively.\n\nSecond, homework teaches students important skills like time management and self-discipline. When students plan their study time and complete assignments on their own, they develop habits that will help them succeed in university and in their future careers. These skills are just as important as academic knowledge.`,
+      tips: "しゅくだいをはいしすべきかどうか、りゆうを2つ、くわしくかこう"
+    },
+    {
+      topic: "Do you think that people rely too much on the internet for information?",
+      modelAnswer: `I think that people rely too much on the internet for information. I have two reasons to support this opinion.\n\nFirst, not all information on the internet is accurate. Anyone can post content online, and much of it is not checked by experts. As a result, people may believe false information and make bad decisions based on it. This is a serious problem, especially when it comes to health and news.\n\nSecond, relying on the internet has made people less willing to think for themselves. In the past, people would read books, do research, and form their own opinions. Today, many people simply accept the first answer they find on a search engine without questioning whether it is true or not.`,
+      tips: "インターネットにたよりすぎかどうか、りゆうを2つ、くわしくかこう"
+    },
+    {
+      topic: "Some people say that all children should learn to play a musical instrument. Do you agree?",
+      modelAnswer: `I agree that all children should learn to play a musical instrument. I have two reasons to support this opinion.\n\nFirst, learning music improves children's brain development. Research has shown that playing an instrument strengthens memory, concentration, and problem-solving skills. These abilities help children perform better in other subjects like math and science as well.\n\nSecond, playing music teaches children patience and perseverance. Learning an instrument requires regular practice over a long period of time. Children learn that they need to work hard and not give up in order to improve. This important lesson can be applied to many other areas of their lives.`,
+      tips: "すべてのこどもががっきをならうべきかどうか、りゆうを2つ、くわしくかこう"
+    },
+    {
+      topic: "Do you think that companies should allow employees to work from home permanently?",
+      modelAnswer: `I think that companies should allow employees to work from home permanently. I have two reasons to support this opinion.\n\nFirst, working from home saves a lot of commuting time. Many people spend one or two hours traveling to the office every day. If they can work from home, they can use that time for family, exercise, or rest. This improves their quality of life and makes them happier and more productive.\n\nSecond, remote work is better for the environment. When fewer people commute by car or train, carbon dioxide emissions decrease. Also, companies can use smaller offices, which reduces energy consumption. In a time when we need to fight climate change, remote work is a practical solution.`,
+      tips: "ざいたくきんむをえいきゅうにみとめるべきかどうか、りゆうを2つ、くわしくかこう"
+    }
+  ]
+};
+
+// ===== WORD COUNT TARGETS =====
+const WORD_TARGETS = {
+  "3": { min: 25, max: 35, label: "25-35" },
+  "pre2": { min: 40, max: 50, label: "40-50" },
+  "2": { min: 80, max: 100, label: "80-100" }
+};
+
+// ===== SELF-CHECK ITEMS =====
+const SELF_CHECKS_EMAIL = [
+  "しつもんに ぜんぶ こたえた？",
+  "ぶんの はじめは おおもじ？",
+  "ピリオド (.) や クエスチョンマーク (?) をつけた？",
+  "Thank you for your email. をかいた？",
+  "もくひょうの ごすうに とどいた？"
+];
+
+const SELF_CHECKS_ESSAY = [
+  "I think ... でいけんをかいた？",
+  "りゆうを 2つ かけた？ (First, ... Second, ...)",
+  "ぶんの はじめは おおもじ？",
+  "ピリオド (.) をつけた？",
+  "もくひょうの ごすうに とどいた？"
+];
+
+// ===== APP STATE =====
+let state = {
+  grade: null,
+  mode: null,
+  currentIndex: 0,
+  usedIndices: [],
+  timerRunning: false,
+  timerSeconds: 0,
+  timerInterval: null,
+  stats: { total: 0, stars: 0 }
+};
+
+// ===== AUDIO =====
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+
+function ensureAudioCtx() {
+  if (!audioCtx) audioCtx = new AudioCtx();
+}
+
+function playSound(type) {
+  try {
+    ensureAudioCtx();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    if (type === 'select') {
+      osc.frequency.value = 600;
+      gain.gain.value = 0.1;
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.08);
+    } else if (type === 'submit') {
+      osc.frequency.value = 523;
+      gain.gain.value = 0.15;
+      osc.start();
+      osc.frequency.setValueAtTime(659, audioCtx.currentTime + 0.1);
+      osc.frequency.setValueAtTime(784, audioCtx.currentTime + 0.2);
+      osc.stop(audioCtx.currentTime + 0.35);
+    } else if (type === 'star') {
+      osc.frequency.value = 880;
+      osc.type = 'triangle';
+      gain.gain.value = 0.12;
+      osc.start();
+      osc.frequency.setValueAtTime(1100, audioCtx.currentTime + 0.1);
+      osc.stop(audioCtx.currentTime + 0.2);
+    } else if (type === 'click') {
+      osc.frequency.value = 400;
+      gain.gain.value = 0.05;
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.05);
+    }
+  } catch (e) {}
+}
+
+// ===== LOCAL STORAGE =====
+function loadStats() {
+  try {
+    const saved = localStorage.getItem('eiken_writing_stats');
+    if (saved) state.stats = JSON.parse(saved);
+  } catch (e) {}
+  updateStatsDisplay();
+}
+
+function saveStats() {
+  try {
+    localStorage.setItem('eiken_writing_stats', JSON.stringify(state.stats));
+  } catch (e) {}
+  updateStatsDisplay();
+}
+
+function updateStatsDisplay() {
+  document.getElementById('statTotal').textContent = state.stats.total;
+  document.getElementById('statStars').textContent = state.stats.stars;
+}
+
+// ===== TOAST =====
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// ===== SCREEN NAVIGATION =====
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ===== HOME SCREEN LOGIC =====
+const gradeSelector = document.getElementById('gradeSelector');
+const modeSelector = document.getElementById('modeSelector');
+const startBtn = document.getElementById('startBtn');
+
+gradeSelector.addEventListener('click', e => {
+  const btn = e.target.closest('.sel-btn');
+  if (!btn) return;
+  playSound('select');
+  gradeSelector.querySelectorAll('.sel-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  state.grade = btn.dataset.grade;
+  updateModeAvailability();
+  updateStartBtn();
+});
+
+modeSelector.addEventListener('click', e => {
+  const btn = e.target.closest('.sel-btn');
+  if (!btn || btn.classList.contains('disabled')) return;
+  playSound('select');
+  modeSelector.querySelectorAll('.sel-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  state.mode = btn.dataset.mode;
+  updateStartBtn();
+});
+
+function updateModeAvailability() {
+  const emailBtn = modeSelector.querySelector('[data-mode="email"]');
+  const essayBtn = modeSelector.querySelector('[data-mode="essay"]');
+
+  // Reset
+  emailBtn.classList.remove('disabled');
+  essayBtn.classList.remove('disabled');
+
+  if (state.grade === '2') {
+    // 2級: essay only
+    emailBtn.classList.add('disabled');
+    emailBtn.classList.remove('selected');
+    if (state.mode === 'email') {
+      state.mode = null;
+    }
+  } else if (state.grade === '3') {
+    // 3級: email only
+    essayBtn.classList.add('disabled');
+    essayBtn.classList.remove('selected');
+    if (state.mode === 'essay') {
+      state.mode = null;
+    }
+  }
+  // 準2級: both available
+}
+
+function updateStartBtn() {
+  startBtn.disabled = !(state.grade && state.mode);
+}
+
+startBtn.addEventListener('click', () => {
+  if (!state.grade || !state.mode) return;
+  playSound('submit');
+  state.usedIndices = [];
+  startPractice();
+});
+
+// ===== PRACTICE LOGIC =====
+function getQuestionKey() {
+  if (state.mode === 'email') {
+    return state.grade === 'pre2' ? 'pre2_email' : '3_email';
+  } else {
+    return state.grade === '2' ? '2_essay' : 'pre2_essay';
+  }
+}
+
+function getNextQuestion() {
+  const key = getQuestionKey();
+  const questions = QUESTIONS[key];
+  const available = [];
+  for (let i = 0; i < questions.length; i++) {
+    if (!state.usedIndices.includes(i)) available.push(i);
+  }
+  if (available.length === 0) {
+    state.usedIndices = [];
+    for (let i = 0; i < questions.length; i++) available.push(i);
+  }
+  const idx = available[Math.floor(Math.random() * available.length)];
+  state.usedIndices.push(idx);
+  state.currentIndex = idx;
+  return questions[idx];
+}
+
+function startPractice() {
+  const q = getNextQuestion();
+  const key = getQuestionKey();
+  const questions = QUESTIONS[key];
+
+  // Update header
+  const gradeLabel = state.grade === '3' ? '3きゅう' : state.grade === 'pre2' ? 'じゅん2きゅう' : '2きゅう';
+  const modeLabel = state.mode === 'email' ? 'Eメールがえしん' : 'いけんぶん';
+  document.getElementById('practiceTitle').textContent = `${gradeLabel} ${modeLabel}`;
+
+  // Progress
+  const progress = (state.usedIndices.length / questions.length) * 100;
+  document.getElementById('progressBar').style.width = progress + '%';
+
+  // Render prompt
+  const promptArea = document.getElementById('promptArea');
+  if (state.mode === 'email') {
+    promptArea.innerHTML = renderEmailPrompt(q);
+  } else {
+    promptArea.innerHTML = renderEssayPrompt(q);
+  }
+
+  // Render structure guide
+  renderStructureGuide();
+
+  // Word target
+  const target = WORD_TARGETS[state.grade];
+  document.getElementById('wordTarget').textContent = `もくひょう: ${target.label}語`;
+
+  // Reset textarea
+  const textarea = document.getElementById('writingInput');
+  textarea.value = '';
+  document.getElementById('wordCount').textContent = '0';
+  document.getElementById('wordCount').className = 'word-count under';
+  document.getElementById('submitBtn').disabled = true;
+
+  // Reset timer
+  clearInterval(state.timerInterval);
+  state.timerSeconds = 0;
+  state.timerRunning = true;
+  document.getElementById('timerBadge').textContent = '00:00';
+  state.timerInterval = setInterval(updateTimer, 1000);
+
+  showScreen('practiceScreen');
+}
+
+function renderEmailPrompt(q) {
+  const bodyHtml = q.body.replace(/<q>/g, '<span class="question-highlight">').replace(/<\/q>/g, '</span>');
+  return `
+    <div class="prompt-card email-mode fade-in">
+      <div class="email-header">
+        <div class="email-avatar">${q.from[0]}</div>
+        <div class="email-meta">
+          <div class="email-from">From: ${q.from}</div>
+          <div class="email-subject">Subject: ${q.subject}</div>
+        </div>
+      </div>
+      <div class="email-body">${bodyHtml}</div>
+    </div>
+  `;
+}
+
+function renderEssayPrompt(q) {
+  return `
+    <div class="prompt-card essay-mode fade-in">
+      <div class="essay-topic-label">TOPIC</div>
+      <div class="essay-topic-text">${q.topic}</div>
+      <div style="margin-top:10px;font-size:0.8rem;color:var(--text-light)">&#x1F4A1; ${q.tips}</div>
+    </div>
+  `;
+}
+
+function renderStructureGuide() {
+  const card = document.getElementById('structureCard');
+  if (state.mode === 'email') {
+    card.innerHTML = `
+      <div class="structure-title">&#x1F4DD; かきかたガイド</div>
+      <ol class="structure-steps">
+        <li data-num="1">Hi [なまえ], でかきはじめる</li>
+        <li data-num="2">Thank you for your email. をかく</li>
+        <li data-num="3">1つめの しつもんに こたえる</li>
+        <li data-num="4">2つめの しつもんに こたえる</li>
+        <li data-num="5">Your friend, でおわる</li>
+      </ol>
+    `;
+  } else {
+    card.innerHTML = `
+      <div class="structure-title">&#x1F4DD; かきかたガイド</div>
+      <ol class="structure-steps">
+        <li data-num="1">I think ... (じぶんのいけん)</li>
+        <li data-num="2">First, ... (りゆう1)</li>
+        <li data-num="3">Second, ... (りゆう2)</li>
+        ${state.grade === '2' ? '<li data-num="4">くわしい せつめいや れいを たす</li>' : ''}
+      </ol>
+    `;
+  }
+}
+
+// Timer
+function updateTimer() {
+  if (!state.timerRunning) return;
+  state.timerSeconds++;
+  const m = String(Math.floor(state.timerSeconds / 60)).padStart(2, '0');
+  const s = String(state.timerSeconds % 60).padStart(2, '0');
+  document.getElementById('timerBadge').textContent = `${m}:${s}`;
+}
+
+document.getElementById('timerBadge').addEventListener('click', () => {
+  state.timerRunning = !state.timerRunning;
+  if (!state.timerRunning) {
+    showToast('タイマー ていし');
+  } else {
+    showToast('タイマー さいかい');
+  }
+});
+
+// Word counter
+document.getElementById('writingInput').addEventListener('input', () => {
+  const text = document.getElementById('writingInput').value.trim();
+  const words = text ? text.split(/\s+/).filter(w => w.length > 0).length : 0;
+  const countEl = document.getElementById('wordCount');
+  countEl.textContent = words;
+
+  const target = WORD_TARGETS[state.grade];
+  if (words < target.min) {
+    countEl.className = 'word-count under';
+  } else if (words > target.max) {
+    countEl.className = 'word-count over';
+  } else {
+    countEl.className = 'word-count good';
+  }
+
+  document.getElementById('submitBtn').disabled = words < 3;
+});
+
+// Back button
+document.getElementById('backBtn').addEventListener('click', () => {
+  clearInterval(state.timerInterval);
+  showScreen('homeScreen');
+});
+
+// Submit
+document.getElementById('submitBtn').addEventListener('click', () => {
+  playSound('submit');
+  clearInterval(state.timerInterval);
+  showReview();
+});
+
+// ===== REVIEW SCREEN =====
+function showReview() {
+  const key = getQuestionKey();
+  const q = QUESTIONS[key][state.currentIndex];
+  const answer = document.getElementById('writingInput').value.trim();
+  const words = answer ? answer.split(/\s+/).filter(w => w.length > 0).length : 0;
+  const target = WORD_TARGETS[state.grade];
+
+  // Calculate stars based on word count
+  let stars = 1;
+  if (words >= target.min && words <= target.max) {
+    stars = 3;
+  } else if (words >= target.min * 0.7) {
+    stars = 2;
+  }
+
+  // Show stars
+  const starsHtml = Array.from({ length: 3 }, (_, i) =>
+    `<span style="color:${i < stars ? 'var(--gold)' : 'var(--star-empty)'}; text-shadow: ${i < stars ? '0 2px 8px rgba(255,215,0,0.5)' : 'none'}">&#9733;</span>`
+  ).join('');
+  document.getElementById('reviewStars').innerHTML = starsHtml;
+
+  const msgs = ['もうすこし がんばろう!', 'いいかんじ!', 'すばらしい!'];
+  document.getElementById('reviewMsg').textContent = msgs[stars - 1];
+
+  // Your answer
+  document.getElementById('yourAnswer').textContent = answer;
+  const rcEl = document.getElementById('reviewWordCount');
+  rcEl.textContent = words;
+  if (words < target.min) rcEl.className = 'word-count under';
+  else if (words > target.max) rcEl.className = 'word-count over';
+  else rcEl.className = 'word-count good';
+
+  // Model answer
+  const modelText = state.mode === 'email' ? q.modelReply : q.modelAnswer;
+  document.getElementById('modelAnswer').textContent = modelText;
+
+  // Self-check
+  const checks = state.mode === 'email' ? SELF_CHECKS_EMAIL : SELF_CHECKS_ESSAY;
+  const list = document.getElementById('selfCheckList');
+  list.innerHTML = checks.map((text, i) =>
+    `<li class="self-check-item" data-idx="${i}">
+      <div class="check-box"></div>
+      <span>${text}</span>
+    </li>`
+  ).join('');
+
+  list.addEventListener('click', function handler(e) {
+    const item = e.target.closest('.self-check-item');
+    if (!item) return;
+    playSound('click');
+    item.classList.toggle('checked');
+    if (item.classList.contains('checked')) {
+      item.querySelector('.check-box').innerHTML = '&#10003;';
+    } else {
+      item.querySelector('.check-box').innerHTML = '';
+    }
+  });
+
+  // Update stats
+  state.stats.total++;
+  state.stats.stars += stars;
+  saveStats();
+
+  playSound('star');
+  showScreen('reviewScreen');
+}
+
+// Next question
+document.getElementById('nextBtn').addEventListener('click', () => {
+  playSound('select');
+  startPractice();
+});
+
+// Home return
+document.getElementById('homeReturnBtn').addEventListener('click', () => {
+  playSound('click');
+  showScreen('homeScreen');
+});
+
+// ===== INIT =====
+loadStats();
+</script>
+</body>
+</html>
