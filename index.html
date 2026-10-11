@@ -229,22 +229,44 @@ body {
   height: 100dvh;
 }
 
+/* ── 横長2カラム ── */
 .practice-body {
   flex: 1;
-  padding: 10px 12px 0;
+  padding: 10px;
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  flex-direction: row;
+  gap: 10px;
   overflow: hidden;
   min-height: 0;
 }
 
-/* 問題文: コンパクト、スクロール可能 */
-.prompt-card {
-  max-height: 30vh;
+/* 左カラム: 問題文+ガイド（スクロール可） */
+.practice-body > #promptArea,
+.practice-body > #structureCard {
+  /* 直接の子にしない — .pane-left でまとめる */
+}
+.pane-left {
+  flex: 1;
+  min-width: 0;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 右カラム: 入力+提出 */
+.pane-right {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 問題文 */
+.prompt-card {
   padding: 12px 14px;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   line-height: 1.6;
 }
 
@@ -263,6 +285,7 @@ body {
   font-size: 0.75rem;
   font-weight: 700;
   margin-right: 4px;
+  color: #2E7D32;
 }
 .structure-card ol {
   display: flex;
@@ -286,7 +309,7 @@ body {
   color: var(--primary);
 }
 
-/* 入力欄: 残りスペース全部 */
+/* 入力欄 */
 .writing-area {
   flex: 1;
   display: flex;
@@ -301,10 +324,25 @@ body {
 .writing-label { font-size: 0.8rem; margin-bottom: 4px; }
 .word-counter { padding-top: 4px; }
 
-/* 提出ボタン: 画面下固定 */
+/* 提出ボタン（右カラム下） */
+.pane-right .submit-area {
+  flex-shrink: 0;
+  padding: 0;
+}
 .submit-area {
   padding: 8px 12px 12px;
   flex-shrink: 0;
+}
+
+/* モバイル: 縦積み */
+@media (max-width: 640px) {
+  .practice-body {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  .pane-left { flex: none; overflow: visible; }
+  .pane-right { flex: none; padding-bottom: 20px; }
+  .pane-right .writing-textarea { min-height: 160px; }
 }
 
 /* Email/Topic Card */
@@ -847,20 +885,23 @@ body {
     <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressBar" style="width:0%"></div></div>
   </div>
   <div class="practice-body" id="practiceBody">
-    <div id="promptArea"></div>
-    <div class="structure-card fade-in" id="structureCard"></div>
-    <div class="writing-area fade-in">
-      <div class="writing-label">&#x1F4DD; あなたの解答</div>
-      <textarea class="writing-textarea" id="writingInput" placeholder="ここに英語で書こう..."></textarea>
-      <div class="word-counter">
-        <span><span class="word-count" id="wordCount">0</span> words</span>
-        <span class="word-target" id="wordTarget">目標: 25-35語</span>
+    <div class="pane-left">
+      <div id="promptArea"></div>
+      <div class="structure-card fade-in" id="structureCard"></div>
+    </div>
+    <div class="pane-right">
+      <div class="writing-area fade-in">
+        <div class="writing-label">&#x1F4DD; あなたの解答</div>
+        <textarea class="writing-textarea" id="writingInput" placeholder="ここに英語で書こう..."></textarea>
+        <div class="word-counter">
+          <span><span class="word-count" id="wordCount">0</span> words</span>
+          <span class="word-target" id="wordTarget">目標: 25-35語</span>
+        </div>
+      </div>
+      <div class="submit-area">
+        <button class="submit-btn" id="submitBtn" disabled>提出する</button>
       </div>
     </div>
-  </div>
-
-  <div class="submit-area">
-    <button class="submit-btn" id="submitBtn" disabled>提出する</button>
   </div>
 </div>
 
